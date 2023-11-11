@@ -1,13 +1,17 @@
 package dev.sakurakooi.spigot.meowilbox;
 
+import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxBlockListener;
+import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxInventoryListener;
 import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxRecipeListener;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxRecipeUtils;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -22,6 +26,16 @@ public final class MeowilBox extends JavaPlugin {
         instance = this;
         registerCraftRecipe();
         Bukkit.getPluginManager().registerEvents(new MeowilBoxRecipeListener(), this);
+        Bukkit.getPluginManager().registerEvents(new MeowilBoxBlockListener(), this);
+        Bukkit.getPluginManager().registerEvents(new MeowilBoxInventoryListener(), this);
+        Bukkit.getConsoleSender().sendMessage(
+                Component.text()
+                        .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))
+                        .append(Component.text(" >> ", NamedTextColor.GRAY))
+                        .append(Component.text("v" + this.getPluginMeta().getVersion()+ " Loaded! ", NamedTextColor.GREEN))
+                        .append(Component.text(" | ", NamedTextColor.GRAY))
+                        .append(Component.text("Powered by.SakuraKooi", NamedTextColor.AQUA))
+        );
     }
 
     @Override

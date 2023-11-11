@@ -3,7 +3,7 @@ package dev.sakurakooi.spigot.meowilbox.utils;
 import com.saicone.rtag.util.SkullTexture;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -97,8 +97,8 @@ public class MeowilBoxRecipeUtils {
         };
         ItemStack head = SkullTexture.getTexturedHead(texture);
         ItemMeta meta = head.getItemMeta();
-        meta.displayName(Component.text(itemName).color(TextColor.color(0xffff55)));
-        meta.lore(List.of(Component.text("Meowil Box").color(TextColor.color(0xff4081)).decorate(TextDecoration.BOLD)));
+        meta.displayName(Component.text(itemName).color(NamedTextColor.YELLOW));
+        meta.lore(List.of(Component.text("Meowil Box").color(NamedTextColor.GRAY).decorate(TextDecoration.BOLD)));
         head.setItemMeta(meta);
         return head;
     }
