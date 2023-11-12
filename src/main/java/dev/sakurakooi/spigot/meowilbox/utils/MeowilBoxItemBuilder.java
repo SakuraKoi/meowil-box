@@ -1,7 +1,6 @@
 package dev.sakurakooi.spigot.meowilbox.utils;
 
 import com.saicone.rtag.RtagItem;
-import com.saicone.rtag.item.ItemObject;
 import com.saicone.rtag.util.SkullTexture;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -17,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static net.kyori.adventure.text.format.NamedTextColor.*;
 import static net.kyori.adventure.text.format.TextDecoration.BOLD;
@@ -124,7 +122,7 @@ public class MeowilBoxItemBuilder {
 
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:package_mark");
-            tag.set(items.stream().map(ItemObject::asNMSCopy).map(ItemObject::getTag).collect(Collectors.toList()), "PublicBukkitValues", "meowilbox:package_content");
+            MeowilBoxInventoryUtils.setInventory(tag, items);
         });
 
         return item;
@@ -135,7 +133,7 @@ public class MeowilBoxItemBuilder {
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:petals_mark");
-            tag.set(new ArrayList<>(), "PublicBukkitValues", "meowilbox:petals_content");
+            MeowilBoxInventoryUtils.setInventory(tag, new ArrayList<>());
         });
         return item;
     }
