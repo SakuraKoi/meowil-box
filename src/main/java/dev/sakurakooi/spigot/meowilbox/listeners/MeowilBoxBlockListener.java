@@ -40,7 +40,6 @@ public class MeowilBoxBlockListener implements Listener {
         }
         if (MeowilBoxUtils.isMeowilBoxPetals(e.getItemInHand())) {
             e.setCancelled(true);
-            openPetals(e.getPlayer(), e.getItemInHand());
         }
     }
 
@@ -78,6 +77,11 @@ public class MeowilBoxBlockListener implements Listener {
                 openMailBox(e.getPlayer());
                 e.getPlayer().getWorld().dropItem(e.getClickedBlock().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createItemPackage(e.getPlayer(), Collections.singletonList(MeowilBoxItemBuilder.createPetals()), false));
                 e.getPlayer().getWorld().dropItem(e.getClickedBlock().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createItemPackage(e.getPlayer(), Collections.singletonList(MeowilBoxItemBuilder.createPetals()), true));
+            }
+        } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getActiveItem())) {
+                e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
+                openPetals(e.getPlayer(), e.getPlayer().getActiveItem());
             }
         }
     }

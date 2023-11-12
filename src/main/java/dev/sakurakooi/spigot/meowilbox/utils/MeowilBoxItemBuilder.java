@@ -11,10 +11,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static net.kyori.adventure.text.format.NamedTextColor.*;
@@ -121,7 +118,7 @@ public class MeowilBoxItemBuilder {
 
 
         RtagItem.edit(item, tag -> {
-            tag.set("nya", "PublicBukkitValues", "meowilbox:package_mark");
+            tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:package_mark");
             MeowilBoxInventoryUtils.setInventory(tag, items);
         });
 
@@ -132,7 +129,7 @@ public class MeowilBoxItemBuilder {
         String texture = "http://textures.minecraft.net/texture/9aef19d2e2a658f33b5c25d1aeae01e83320dd385eceb6a766cfe547ffc03dad";
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
-            tag.set("nya", "PublicBukkitValues", "meowilbox:petals_mark");
+            tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:petals_mark");
             MeowilBoxInventoryUtils.setInventory(tag, new ArrayList<>());
         });
         return item;
