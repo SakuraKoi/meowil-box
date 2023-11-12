@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -92,25 +93,20 @@ public class MeowilBoxItemBuilder {
                 itemName = "Stonebrick Meowil box";
                 yield "https://textures.minecraft.net/texture/6bed4a8357b2e931d4d07e8595c5bcb9c2ed6b0ee0b883f0565d8405459d8875";
             }
+            case WHITE_WOOL: {
+                itemName = "Rainbow Meowil box";
+                yield "http://textures.minecraft.net/texture/328cb8a572e3ce993ccec4f69e6f37a859cd5ce0d466b80a123c094935ed4c22";
+            }
             default: throw new IllegalArgumentException("Unexpected material: " + material);
         };
         ItemStack item = createCustomHead(texture, itemName, YELLOW, list -> {});
         RtagItem.edit(item, tag -> {
-            tag.set("nya", "PublicBukkitValues", "meowilbox:mailbox_mark");
+            tag.set(material.name(), "PublicBukkitValues", "meowilbox:mailbox_mark");
         });
         return item;
     }
 
-    public static ItemStack createSpecialRainbowMailbox() {
-        String texture = "http://textures.minecraft.net/texture/328cb8a572e3ce993ccec4f69e6f37a859cd5ce0d466b80a123c094935ed4c22";
-        ItemStack item = createCustomHead(texture, "Rainbow Meowil Box", YELLOW, list -> {});
-        RtagItem.edit(item, tag -> {
-            tag.set("nya", "PublicBukkitValues", "meowilbox:mailbox_mark");
-        });
-        return item;
-    }
-
-    public static ItemStack createItemPackage(OfflinePlayer from, ArrayList<ItemStack> items, boolean sakura) {
+    public static ItemStack createItemPackage(OfflinePlayer from, List<ItemStack> items, boolean sakura) {
         String texture = sakura ?
                 "https://textures.minecraft.net/texture/8b45faf5b17744f1ff2f3acddc89a35823ca2e471d02302e7f59cc458697fb66" :
                 "https://textures.minecraft.net/texture/fa85971fb13bf0b78eb9f96b2bdce1a11331373de30d9239e8bc06a2912c4a4";
@@ -127,7 +123,8 @@ public class MeowilBoxItemBuilder {
 
 
         RtagItem.edit(item, tag -> {
-            tag.set(items.stream().map(ItemObject::getTag).collect(Collectors.toList()), "PublicBukkitValues", "meowilbox:package_content");
+            tag.set("nya", "PublicBukkitValues", "meowilbox:package_mark");
+            tag.set(items.stream().map(ItemObject::asNMSCopy).map(ItemObject::getTag).collect(Collectors.toList()), "PublicBukkitValues", "meowilbox:package_content");
         });
 
         return item;
@@ -137,9 +134,15 @@ public class MeowilBoxItemBuilder {
         String texture = "http://textures.minecraft.net/texture/9aef19d2e2a658f33b5c25d1aeae01e83320dd385eceb6a766cfe547ffc03dad";
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
-            tag.set("nya", "PublicBukkitValues", "meowilbox:petals");
+            tag.set("nya", "PublicBukkitValues", "meowilbox:petals_mark");
             tag.set(new ArrayList<>(), "PublicBukkitValues", "meowilbox:petals_content");
         });
+        return item;
+    }
+
+    public static ItemStack createSendButton() {
+        String texture = "http://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
+        ItemStack item = createCustomHead(texture, "寄信", AQUA, lores -> {});
         return item;
     }
 

@@ -65,7 +65,7 @@ public final class MeowilBox extends JavaPlugin {
 
         // Easter egg
         NamespacedKey key = new NamespacedKey(getInstance(), "rainbow_mailbox");
-        ShapedRecipe recipe = new ShapedRecipe(key, MeowilBoxItemBuilder.createSpecialRainbowMailbox());
+        ShapedRecipe recipe = new ShapedRecipe(key, MeowilBoxItemBuilder.createMailbox(Material.WHITE_WOOL));
         recipe.shape("ROY", "DEG", "PBA");
         recipe.setIngredient('R', Material.RED_WOOL);
         recipe.setIngredient('O', Material.ORANGE_WOOL);
