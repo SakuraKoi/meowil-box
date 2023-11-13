@@ -73,12 +73,14 @@ public class MeowilBoxBlockListener implements Listener {
                 if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
                     e.setCancelled(true);
                     MeowilBoxUI.openMailBox(e.getPlayer());
-                    e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createPetals());
+                    return;
                 }
-            } else if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getInventory().getItemInMainHand())) {
+            }
+            if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getInventory().getItemInMainHand())) {
                 e.setCancelled(true);
                 e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
                 MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getInventory().getHeldItemSlot(), e.getPlayer().getInventory().getItemInMainHand());
+                return;
             }
         }
     }
