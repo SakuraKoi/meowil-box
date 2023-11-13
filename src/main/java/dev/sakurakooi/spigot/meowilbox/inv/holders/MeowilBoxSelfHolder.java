@@ -43,19 +43,26 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
     }
 
     private int getCurrentPage() {
+        // TODO unimplemented
         return 1;
     }
 
     private boolean hasPrevPage() {
+        // TODO unimplemented
         return true;
     }
 
     private boolean hasNextPage() {
+        // TODO unimplemented
         return false;
     }
 
     @Override
     public void saveData() {
+        // TODO unimplemented
+    }
 
+    public void handleButtonClick(int slot) {
+        // TODO unimplemented
     }
 }

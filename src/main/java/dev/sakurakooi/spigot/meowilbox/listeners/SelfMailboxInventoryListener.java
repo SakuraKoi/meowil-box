@@ -3,7 +3,6 @@ package dev.sakurakooi.spigot.meowilbox.listeners;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -16,7 +15,7 @@ public class SelfMailboxInventoryListener implements Listener {
         if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSelfHolder holder) {
             if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSelfHolder) {
                 if (e.getSlot() >= 27) {
-                    handleButtonClick(e.getView().getPlayer(), e.getSlot(), holder);
+                    holder.handleButtonClick(e.getSlot());
                     e.setCancelled(true);
                     return;
                 }
@@ -40,9 +39,5 @@ public class SelfMailboxInventoryListener implements Listener {
         if (e.getInventory().getHolder() instanceof MeowilBoxSelfHolder) {
             e.setCancelled(true);
         }
-    }
-
-    private void handleButtonClick(HumanEntity player, int slot, MeowilBoxSelfHolder holder) {
-        // TODO unimplemented
     }
 }
