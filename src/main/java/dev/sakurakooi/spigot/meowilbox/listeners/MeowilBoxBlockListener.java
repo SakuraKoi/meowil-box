@@ -68,17 +68,18 @@ public class MeowilBoxBlockListener implements Listener {
 
     @EventHandler
     public void onBlockClick(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
-            if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
+                if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
+                    e.setCancelled(true);
+                    MeowilBoxUI.openMailBox(e.getPlayer());
+                    e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createPetals());
+                }
+            } else if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getInventory().getItemInMainHand())) {
                 e.setCancelled(true);
-                MeowilBoxUI.openMailBox(e.getPlayer());
-            }
-        } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getActiveItem())) {
                 e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
-                MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getActiveItem());
+                MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getInventory().getHeldItemSlot(), e.getPlayer().getInventory().getItemInMainHand());
             }
         }
     }
-
 }

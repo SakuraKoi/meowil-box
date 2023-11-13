@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,7 +36,7 @@ public final class MeowilBox extends JavaPlugin {
                 Component.text()
                         .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))
                         .append(Component.text(" >> ", NamedTextColor.GRAY))
-                        .append(Component.text("Plugin Loaded! Version: " + this.getPluginMeta().getVersion(), NamedTextColor.GREEN))
+                        .append(Component.text("Plugin Loaded! Version: v" + this.getPluginMeta().getVersion(), NamedTextColor.GREEN))
                         .append(Component.text(" | ", NamedTextColor.GRAY))
                         .append(Component.text("Powered by.SakuraKooi", NamedTextColor.AQUA))
         );

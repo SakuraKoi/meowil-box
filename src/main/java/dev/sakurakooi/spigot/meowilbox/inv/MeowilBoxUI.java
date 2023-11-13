@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class MeowilBoxUI {
-    public static void openPetalsInventory(Player player, ItemStack petalItem) {
-        var holder = new MeowilBoxPetalHolder(player, petalItem);
+    public static void openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
+        var holder = new MeowilBoxPetalHolder(player, heldItemSlot, petalItem);
         player.openInventory(holder.getInventory());
     }
 

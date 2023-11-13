@@ -17,11 +17,16 @@ import java.util.stream.IntStream;
 public class MeowilBoxPetalHolder implements MeowilBoxHolder {
     @Getter
     private Inventory inventory;
+
+    private final Player player;
+    private final int heldItemSlot;
     @Getter
     @Setter
     private ItemStack petalItem;
 
-    public MeowilBoxPetalHolder(Player player, ItemStack petalItem) {
+    public MeowilBoxPetalHolder(Player player, int heldItemSlot, ItemStack petalItem) {
+        this.player = player;
+        this.heldItemSlot = heldItemSlot;
         this.petalItem = petalItem;
         this.inventory = Bukkit.createInventory(this, 27, Component.text("Petals")); // FIXME TEXT
         RtagItem tag = RtagItem.of(petalItem);
@@ -33,8 +38,10 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
     public void saveData() {
         RtagItem.edit(petalItem, tag -> {
             MeowilBoxInventoryUtils.setInventory(tag, IntStream.range(0, inventory.getSize()).boxed()
-                    .collect(HashMap::new, (m, v) -> m.put(v, inventory.getItem(v)), HashMap::putAll)
+                    .filter(index -> inventory.getItem(index) != null)
+                    .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll)
             );
         });
+        player.getInventory().setItem(heldItemSlot, petalItem);
     }
 }

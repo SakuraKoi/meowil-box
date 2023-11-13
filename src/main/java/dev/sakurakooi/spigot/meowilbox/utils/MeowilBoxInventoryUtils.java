@@ -20,13 +20,19 @@ public class MeowilBoxInventoryUtils {
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_content");
     }
 
+    @SuppressWarnings("unchecked")
     public static Map<Integer, ItemStack> getInventory(RtagEditor<?> tag) {
-        Map<Integer, Map<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_inventory");
-        return nbtList.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> ItemTagStream.INSTANCE.fromMap(e.getValue())));
+        List<HashMap<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_inventory");
+        return nbtList.stream().collect(Collectors.toMap(map -> (int)map.get("Slot"), map -> ItemTagStream.INSTANCE.fromMap((Map<String, Object>) map.get("Item"))));
     }
 
     public static void setInventory(RtagEditor<?> tag, Map<Integer, ItemStack> items) {
-        Map<Integer, Map<String, Object>> nbtList = items.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> ItemTagStream.INSTANCE.toMap(e.getValue())));
+        List<HashMap<String, Object>> nbtList = items.entrySet().stream().map(entry -> {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("Slot", entry.getKey());
+            map.put("Item", ItemTagStream.INSTANCE.toMap(entry.getValue()));
+            return map;
+        }).toList();
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_inventory");
     }
 }

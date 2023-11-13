@@ -28,15 +28,15 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
 
         // 36-44
         inventory.setItem(36, MeowilBoxItemBuilder.createPlayerListButton());
-        if (hasNextPage()) {
-            inventory.setItem(43, MeowilBoxItemBuilder.createNextPageButton());
-        } else {
-            inventory.setItem(43, MeowilBoxItemBuilder.createPageStopButton(true));
-        }
         if (hasPrevPage()) {
-            inventory.setItem(44, MeowilBoxItemBuilder.createPrevPageButton());
+            inventory.setItem(42, MeowilBoxItemBuilder.createPrevPageButton());
         } else {
-            inventory.setItem(44, MeowilBoxItemBuilder.createPageStopButton(false));
+            inventory.setItem(42, MeowilBoxItemBuilder.createPageStopButton(false));
+        }
+        if (hasNextPage()) {
+            inventory.setItem(44, MeowilBoxItemBuilder.createNextPageButton());
+        } else {
+            inventory.setItem(44, MeowilBoxItemBuilder.createPageStopButton(true));
         }
     }
 
