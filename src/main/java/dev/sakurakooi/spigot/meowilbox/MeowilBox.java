@@ -1,5 +1,6 @@
 package dev.sakurakooi.spigot.meowilbox;
 
+import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxBlockListener;
 import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxInventoryListener;
 import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxRecipeListener;
@@ -11,6 +12,8 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,7 +45,13 @@ public final class MeowilBox extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getOpenInventory().getTopInventory().getHolder() instanceof MeowilBoxHolder) {
+                MeowilBoxHolder holder = (MeowilBoxHolder) player.getOpenInventory().getTopInventory().getHolder();
+                holder.saveData();
+                player.closeInventory();
+            }
+        }
     }
 
     private void registerCraftRecipe() {
