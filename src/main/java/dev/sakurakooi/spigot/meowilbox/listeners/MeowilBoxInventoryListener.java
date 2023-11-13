@@ -1,7 +1,9 @@
 package dev.sakurakooi.spigot.meowilbox.listeners;
 
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
+import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPetalHolder;
+import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -12,8 +14,27 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 
 public class MeowilBoxInventoryListener implements Listener {
+
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
+    public void onInventoryClickSelf(InventoryClickEvent e) {
+        if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSelfHolder) {
+            if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSelfHolder) {
+                if (e.getSlot() >= 27) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryMoveSelf(InventoryMoveItemEvent e) {
+        if (e.getDestination().getHolder() instanceof MeowilBoxSelfHolder) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClickPetal(InventoryClickEvent e) {
         if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxPetalHolder) {
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getCurrentItem())) {
                 e.setCancelled(true);
@@ -26,7 +47,7 @@ public class MeowilBoxInventoryListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryMode(InventoryMoveItemEvent e) {
+    public void onInventoryMovePetal(InventoryMoveItemEvent e) {
         MeowilBoxPetalHolder holder = null;
         if (e.getSource().getHolder() instanceof MeowilBoxPetalHolder) {
             holder = (MeowilBoxPetalHolder) e.getSource().getHolder();
@@ -45,7 +66,7 @@ public class MeowilBoxInventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        if (e.getInventory().getHolder() instanceof MeowilBoxPetalHolder holder) {
+        if (e.getInventory().getHolder() instanceof MeowilBoxHolder holder) {
             holder.saveData();
         }
     }

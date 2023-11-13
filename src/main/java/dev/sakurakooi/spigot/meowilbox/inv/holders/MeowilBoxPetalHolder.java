@@ -6,13 +6,17 @@ import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxInventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.IntStream;
+
+import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 public class MeowilBoxPetalHolder implements MeowilBoxHolder {
     @Getter
@@ -28,7 +32,8 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
         this.player = player;
         this.heldItemSlot = heldItemSlot;
         this.petalItem = petalItem;
-        this.inventory = Bukkit.createInventory(this, 27, Component.text("Petals")); // FIXME TEXT
+        this.inventory = Bukkit.createInventory(this, 27, Objects.requireNonNullElse(petalItem.getItemMeta().displayName(),
+                Component.text("樱花手袋").color(TextColor.color(0xff4081)).decoration(ITALIC, false)));
         RtagItem tag = RtagItem.of(petalItem);
         var items = MeowilBoxInventoryUtils.getInventory(tag);
         items.forEach(inventory::setItem);

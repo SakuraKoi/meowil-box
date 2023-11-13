@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class MeowilBoxUtils {
     public static boolean isMeowilBox(ItemStack stack) {
         if (stack == null)
@@ -35,6 +37,15 @@ public class MeowilBoxUtils {
             return tag.hasTag("PublicBukkitValues", "meowilbox:petals_mark");
         }
         return false;
+    }
+
+    public static int getMeowilBoxPetalsSize(ItemStack stack) {
+        Objects.requireNonNull(stack);
+        if (stack.getType() == Material.PLAYER_HEAD) {
+            RtagItem tag = new RtagItem(stack);
+            return Objects.requireNonNullElse(tag.get("PublicBukkitValues", "meowilbox:petals_size"), 27);
+        }
+        throw new IllegalArgumentException("stack is not a MeowilBoxPetals");
     }
 
     public static boolean isMeowilBox(Block block) {

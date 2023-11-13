@@ -93,7 +93,8 @@ public class MeowilBoxItemBuilder {
                 itemName = "Rainbow Meowil box";
                 yield "http://textures.minecraft.net/texture/328cb8a572e3ce993ccec4f69e6f37a859cd5ce0d466b80a123c094935ed4c22";
             }
-            default: throw new IllegalArgumentException("Unexpected material: " + material);
+            default:
+                throw new IllegalArgumentException("Unexpected material: " + material);
         };
         ItemStack item = createCustomHead(texture, itemName, YELLOW, list -> {});
         RtagItem.edit(item, tag -> {
@@ -126,11 +127,12 @@ public class MeowilBoxItemBuilder {
         return item;
     }
 
-    public static ItemStack createPetals() {
+    public static ItemStack createPetals(int size) {
         String texture = "http://textures.minecraft.net/texture/9aef19d2e2a658f33b5c25d1aeae01e83320dd385eceb6a766cfe547ffc03dad";
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:petals_mark");
+            tag.set(size, "PublicBukkitValues", "meowilbox:petals_size");
             MeowilBoxInventoryUtils.setInventory(tag, new HashMap<>());
         });
         return item;
@@ -147,7 +149,7 @@ public class MeowilBoxItemBuilder {
 
     public static ItemStack createPlayerListButton() {
         String texture = "http://textures.minecraft.net/texture/259e8d4196fea827025c2927a6fcd6e98d030057371238a77ae4cddebce86477";
-        ItemStack item = createCustomHead(texture, "玩家列表", AQUA, lores -> {});
+        ItemStack item = createCustomHead(texture, "串门", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
         });
@@ -162,6 +164,7 @@ public class MeowilBoxItemBuilder {
         });
         return item;
     }
+
     public static ItemStack createPrevPageButton() {
         String texture = "http://textures.minecraft.net/texture/7a2c12cb22918384e0a81c82a1ed99aebdce94b2ec2754800972319b57900afb";
         ItemStack item = createCustomHead(texture, "上一页", AQUA, lores -> {});
@@ -170,6 +173,7 @@ public class MeowilBoxItemBuilder {
         });
         return item;
     }
+
     public static ItemStack createPageStopButton(boolean directionNext) {
         String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
         ItemStack item = createCustomHead(texture, directionNext ? "下一页" : "上一页", RED, lores -> {
@@ -182,25 +186,21 @@ public class MeowilBoxItemBuilder {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static ItemStack createPaddingPane() {
-        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(" "));
+        item.setItemMeta(meta);
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
+        return item;
+    }
+
+    public static ItemStack createPageButton(int currentPage) {
+        ItemStack item = new ItemStack(Material.BIRCH_HANGING_SIGN);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text("第 " + currentPage + " 页").color(AQUA).decoration(ITALIC, false).decorate(BOLD));
         item.setItemMeta(meta);
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -213,7 +213,7 @@ public class MeowilBoxItemBuilder {
         ItemStack head = SkullTexture.getTexturedHead(texture);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         meta.displayName(Component.text(itemName, nameColor).decoration(ITALIC, false));
-        ArrayList<Component> lore =new ArrayList<>();
+        ArrayList<Component> lore = new ArrayList<>();
         loreHandler.accept(lore);
         meta.lore(lore);
         head.setItemMeta(meta);
