@@ -2,12 +2,15 @@ package dev.sakurakooi.spigot.meowilbox.utils;
 
 import com.saicone.rtag.RtagEditor;
 import com.saicone.rtag.item.ItemTagStream;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class InventoryUtils {
     public static List<ItemStack> getItemContent(RtagEditor<?> tag) {
@@ -34,5 +37,19 @@ public class InventoryUtils {
             return map;
         }).toList();
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_inventory");
+    }
+
+
+    public static List<ItemStack> inventoryToList(Inventory inventory, int start, int end) {
+        return IntStream.range(start, end).boxed()
+                .map(inventory::getItem)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    public static Map<Integer, ItemStack> inventoryToMap(Inventory inventory, int start, int end) {
+        return IntStream.range(start, end).boxed()
+                .filter(index -> inventory.getItem(index) != null)
+                .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll);
     }
 }

@@ -12,9 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
@@ -42,10 +40,7 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
     @Override
     public void saveData() {
         RtagItem.edit(petalItem, tag -> {
-            InventoryUtils.setInventory(tag, IntStream.range(0, inventory.getSize()).boxed()
-                    .filter(index -> inventory.getItem(index) != null)
-                    .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll)
-            );
+            InventoryUtils.setInventory(tag, InventoryUtils.inventoryToMap(inventory, 0, inventory.getSize()));
         });
         player.getInventory().setItem(heldItemSlot, petalItem);
     }

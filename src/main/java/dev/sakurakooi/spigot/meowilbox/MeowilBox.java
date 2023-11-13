@@ -1,5 +1,6 @@
 package dev.sakurakooi.spigot.meowilbox;
 
+import dev.sakurakooi.spigot.meowilbox.storage.MailboxManager;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.listeners.*;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
@@ -20,12 +21,15 @@ public final class MeowilBox extends JavaPlugin {
     @Getter
     private static MeowilBox instance;
     @Getter
+    private static MailboxManager mailboxManager;
+    @Getter
     private static final ArrayList<NamespacedKey> registeredCraftRecipes = new ArrayList<>();
 
 
     @Override
     public void onEnable() {
         instance = this;
+        mailboxManager = new MailboxManager();
         registerCraftRecipe();
         Bukkit.getPluginManager().registerEvents(new RecipeListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);

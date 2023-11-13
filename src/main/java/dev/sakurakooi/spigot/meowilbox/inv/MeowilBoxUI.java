@@ -1,10 +1,17 @@
 package dev.sakurakooi.spigot.meowilbox.inv;
 
+import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPetalHolder;
-import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
+import lombok.extern.slf4j.Slf4j;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.concurrent.ExecutionException;
+
+@Slf4j
 public class MeowilBoxUI {
     public static void openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
         var holder = new MeowilBoxPetalHolder(player, heldItemSlot, petalItem);
@@ -12,7 +19,12 @@ public class MeowilBoxUI {
     }
 
     public static void openMailBox(Player player) {
-        var holder = new MeowilBoxSelfHolder(player);
-        player.openInventory(holder.getInventory());
+        try {
+            var holder = MeowilBox.getMailboxManager().getMailbox(player).getHolder();
+            player.openInventory(holder.getInventory());
+        } catch (ExecutionException e) {
+            log.error("An error occurred while loading storage", e);
+            player.sendMessage(Component.text("Error: MeowilBox failed load storage!").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+        }
     }
 }
