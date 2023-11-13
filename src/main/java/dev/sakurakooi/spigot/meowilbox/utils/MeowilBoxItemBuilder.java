@@ -7,6 +7,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -138,29 +139,71 @@ public class MeowilBoxItemBuilder {
     public static ItemStack createSendButton() {
         String texture = "http://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
         ItemStack item = createCustomHead(texture, "寄信", AQUA, lores -> {});
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
         return item;
     }
 
     public static ItemStack createPlayerListButton() {
         String texture = "http://textures.minecraft.net/texture/259e8d4196fea827025c2927a6fcd6e98d030057371238a77ae4cddebce86477";
         ItemStack item = createCustomHead(texture, "玩家列表", AQUA, lores -> {});
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
         return item;
     }
 
     public static ItemStack createNextPageButton() {
         String texture = "http://textures.minecraft.net/texture/291ac432aa40d7e7a687aa85041de636712d4f022632dd5356c880521af2723a";
         ItemStack item = createCustomHead(texture, "下一页", AQUA, lores -> {});
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
         return item;
     }
     public static ItemStack createPrevPageButton() {
         String texture = "http://textures.minecraft.net/texture/7a2c12cb22918384e0a81c82a1ed99aebdce94b2ec2754800972319b57900afb";
         ItemStack item = createCustomHead(texture, "上一页", AQUA, lores -> {});
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
         return item;
     }
     public static ItemStack createPageStopButton(boolean directionNext) {
         String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
         ItemStack item = createCustomHead(texture, directionNext ? "下一页" : "上一页", RED, lores -> {
             lores.add(Component.text("已... 已经一点也不剩了~♡").color(LIGHT_PURPLE).decoration(ITALIC, false));
+        });
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
+        return item;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public static ItemStack createPaddingPane() {
+        ItemStack item = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text(" "));
+        item.setItemMeta(meta);
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
         });
         return item;
     }

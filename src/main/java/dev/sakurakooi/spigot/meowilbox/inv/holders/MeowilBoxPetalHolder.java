@@ -5,19 +5,29 @@ import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxInventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
 public class MeowilBoxPetalHolder implements MeowilBoxHolder {
-    @Setter
+    @Getter
     private Inventory inventory;
     @Getter
     @Setter
     private ItemStack petalItem;
+
+    public MeowilBoxPetalHolder(Player player, ItemStack petalItem) {
+        this.petalItem = petalItem;
+        var inventory = Bukkit.createInventory(this, 27, Component.text("Petals"));
+        RtagItem tag = RtagItem.of(petalItem);
+        var items = MeowilBoxInventoryUtils.getInventory(tag);
+        items.forEach(inventory::setItem);
+    }
 
     @Override
     public void saveData() {
@@ -26,10 +36,5 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
                     .collect(HashMap::new, (m, v) -> m.put(v, inventory.getItem(v)), HashMap::putAll)
             );
         });
-    }
-
-    @Override
-    public @NotNull Inventory getInventory() {
-        return inventory;
     }
 }
