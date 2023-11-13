@@ -31,7 +31,6 @@ public class MeowilBoxInventoryListener implements Listener {
                 }
             }
         }
-        System.out.println(e.getAction().name() + " -> "+e.isCancelled());
     }
 
     @EventHandler
