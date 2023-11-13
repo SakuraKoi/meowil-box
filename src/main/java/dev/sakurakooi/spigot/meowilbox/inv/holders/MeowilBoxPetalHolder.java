@@ -2,7 +2,7 @@ package dev.sakurakooi.spigot.meowilbox.inv.holders;
 
 import com.saicone.rtag.RtagItem;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
-import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxInventoryUtils;
+import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -35,14 +35,14 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
         this.inventory = Bukkit.createInventory(this, 27, Objects.requireNonNullElse(petalItem.getItemMeta().displayName(),
                 Component.text("樱花手袋").color(TextColor.color(0xff4081)).decoration(ITALIC, false)));
         RtagItem tag = RtagItem.of(petalItem);
-        var items = MeowilBoxInventoryUtils.getInventory(tag);
+        var items = InventoryUtils.getInventory(tag);
         items.forEach(inventory::setItem);
     }
 
     @Override
     public void saveData() {
         RtagItem.edit(petalItem, tag -> {
-            MeowilBoxInventoryUtils.setInventory(tag, IntStream.range(0, inventory.getSize()).boxed()
+            InventoryUtils.setInventory(tag, IntStream.range(0, inventory.getSize()).boxed()
                     .filter(index -> inventory.getItem(index) != null)
                     .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll)
             );

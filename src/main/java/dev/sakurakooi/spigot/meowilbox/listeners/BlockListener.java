@@ -4,8 +4,8 @@ import com.saicone.rtag.RtagBlock;
 import com.saicone.rtag.RtagItem;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxUI;
-import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxInventoryUtils;
-import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxItemBuilder;
+import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
+import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +17,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class MeowilBoxBlockListener implements Listener {
+public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         if (e.isCancelled())
@@ -49,13 +49,13 @@ public class MeowilBoxBlockListener implements Listener {
             RtagBlock tag = new RtagBlock(e.getBlock());
             Material material = Material.valueOf(tag.get("PublicBukkitValues", "meowilbox:mailbox_mark"));
             Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), () -> {
-                e.getBlock().getWorld().dropItem(e.getBlock().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createMailbox(material));
+                e.getBlock().getWorld().dropItem(e.getBlock().getLocation().toCenterLocation(), ItemBuilder.createMailbox(material));
             }, 1);
         }
         if (MeowilBoxUtils.isMeowilBoxPackage(e.getBlock())) {
             e.setDropItems(false);
             RtagBlock tag = new RtagBlock(e.getBlock());
-            var items = MeowilBoxInventoryUtils.getItemContent(tag);
+            var items = InventoryUtils.getItemContent(tag);
             Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), () -> {
                 items.forEach(item -> {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation().toCenterLocation(), item);

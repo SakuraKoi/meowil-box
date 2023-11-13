@@ -1,10 +1,8 @@
 package dev.sakurakooi.spigot.meowilbox;
 
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
-import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxBlockListener;
-import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxInventoryListener;
-import dev.sakurakooi.spigot.meowilbox.listeners.MeowilBoxRecipeListener;
-import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxItemBuilder;
+import dev.sakurakooi.spigot.meowilbox.listeners.*;
+import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -29,9 +27,11 @@ public final class MeowilBox extends JavaPlugin {
     public void onEnable() {
         instance = this;
         registerCraftRecipe();
-        Bukkit.getPluginManager().registerEvents(new MeowilBoxRecipeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new MeowilBoxBlockListener(), this);
-        Bukkit.getPluginManager().registerEvents(new MeowilBoxInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RecipeListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+        Bukkit.getPluginManager().registerEvents(new CommonInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PetalInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SelfMailboxInventoryListener(), this);
         Bukkit.getConsoleSender().sendMessage(
                 Component.text()
                         .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))
@@ -73,7 +73,7 @@ public final class MeowilBox extends JavaPlugin {
 
         // Easter egg
         NamespacedKey key = new NamespacedKey(getInstance(), "rainbow_mailbox");
-        ShapedRecipe recipe = new ShapedRecipe(key, MeowilBoxItemBuilder.createMailbox(Material.WHITE_WOOL));
+        ShapedRecipe recipe = new ShapedRecipe(key, ItemBuilder.createMailbox(Material.WHITE_WOOL));
         recipe.shape("ROY", "DEG", "PBA");
         recipe.setIngredient('R', Material.RED_WOOL);
         recipe.setIngredient('O', Material.ORANGE_WOOL);
@@ -90,7 +90,7 @@ public final class MeowilBox extends JavaPlugin {
 
     public static NamespacedKey register(Material material, String name) {
         NamespacedKey key = new NamespacedKey(getInstance(), name);
-        ShapedRecipe recipe = new ShapedRecipe(key, MeowilBoxItemBuilder.createMailbox(material));
+        ShapedRecipe recipe = new ShapedRecipe(key, ItemBuilder.createMailbox(material));
         recipe.shape("WWW", "WEW", "WWW");
         recipe.setIngredient('W', material);
         recipe.setIngredient('E', Material.ENDER_EYE);

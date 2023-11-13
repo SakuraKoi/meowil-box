@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MeowilBoxInventoryUtils {
+public class InventoryUtils {
     public static List<ItemStack> getItemContent(RtagEditor<?> tag) {
         List<Map<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_content");
         return nbtList.stream().map(ItemTagStream.INSTANCE::fromMap).collect(Collectors.toList());

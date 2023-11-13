@@ -19,7 +19,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.*;
 import static net.kyori.adventure.text.format.TextDecoration.BOLD;
 import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
-public class MeowilBoxItemBuilder {
+public class ItemBuilder {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static ItemStack createMailbox(Material material) {
@@ -121,7 +121,7 @@ public class MeowilBoxItemBuilder {
 
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:package_mark");
-            MeowilBoxInventoryUtils.setItemContent(tag, items);
+            InventoryUtils.setItemContent(tag, items);
         });
 
         return item;
@@ -133,7 +133,7 @@ public class MeowilBoxItemBuilder {
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:petals_mark");
             tag.set(size, "PublicBukkitValues", "meowilbox:petals_size");
-            MeowilBoxInventoryUtils.setInventory(tag, new HashMap<>());
+            InventoryUtils.setInventory(tag, new HashMap<>());
         });
         return item;
     }
