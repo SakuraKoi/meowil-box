@@ -119,7 +119,7 @@ public class MeowilBoxItemBuilder {
 
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:package_mark");
-            MeowilBoxInventoryUtils.setInventory(tag, items);
+            MeowilBoxInventoryUtils.setItemContent(tag, items);
         });
 
         return item;
@@ -130,7 +130,7 @@ public class MeowilBoxItemBuilder {
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:petals_mark");
-            MeowilBoxInventoryUtils.setInventory(tag, new ArrayList<>());
+            MeowilBoxInventoryUtils.setItemContent(tag, new ArrayList<>());
         });
         return item;
     }

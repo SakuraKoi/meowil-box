@@ -3,6 +3,7 @@ package dev.sakurakooi.spigot.meowilbox.listeners;
 import com.saicone.rtag.RtagBlock;
 import com.saicone.rtag.RtagItem;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
+import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxUI;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxInventoryUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxItemBuilder;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxUtils;
@@ -35,7 +36,7 @@ public class MeowilBoxBlockListener implements Listener {
             RtagItem item = new RtagItem(e.getItemInHand());
             RtagBlock.edit(e.getBlockPlaced(), tag -> {
                 tag.set("nya", "PublicBukkitValues", "meowilbox:package_mark");
-                tag.set(item.get("PublicBukkitValues", "meowilbox:inv_content"), "PublicBukkitValues", "meowilbox:inv_content");
+                tag.set(item.get("PublicBukkitValues", "meowilbox:item_content"), "PublicBukkitValues", "meowilbox:item_content");
             });
         }
         if (MeowilBoxUtils.isMeowilBoxPetals(e.getItemInHand())) {
@@ -58,7 +59,7 @@ public class MeowilBoxBlockListener implements Listener {
         if (MeowilBoxUtils.isMeowilBoxPackage(e.getBlock())) {
             e.setDropItems(false);
             RtagBlock tag = new RtagBlock(e.getBlock());
-            var items = MeowilBoxInventoryUtils.getInventory(tag);
+            var items = MeowilBoxInventoryUtils.getItemContent(tag);
             Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), () -> {
                 items.forEach(item -> {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation().toCenterLocation(), item);
@@ -91,7 +92,6 @@ public class MeowilBoxBlockListener implements Listener {
     }
 
     private void openPetals(Player player, ItemStack itemInHand) {
-        // TODO
+        MeowilBoxUI.openPetalsInventory(player, itemInHand);
     }
-
 }
