@@ -11,54 +11,47 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 
 public class MeowilBoxInventoryListener implements Listener {
-
     @EventHandler
     public void onInventoryClickSelf(InventoryClickEvent e) {
         if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSelfHolder) {
             if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSelfHolder) {
                 if (e.getSlot() >= 27) {
                     e.setCancelled(true);
+                } else {
+                    InventoryAction action = e.getAction();
+                    if (action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_SOME || action == InventoryAction.PLACE_ONE || action == InventoryAction.SWAP_WITH_CURSOR) {
+                        e.setCancelled(true);
+                    } else if (action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD) {
+                        if (e.getView().getBottomInventory().getItem(e.getHotbarButton()) != null)
+                            e.setCancelled(true);
+                    }
                 }
             }
         }
+        System.out.println(e.getAction().name() + " -> "+e.isCancelled());
     }
 
     @EventHandler
-    public void onInventoryMoveSelf(InventoryMoveItemEvent e) {
-        if (e.getDestination().getHolder() instanceof MeowilBoxSelfHolder) {
+    public void onInventoryDragSelf(InventoryDragEvent e) {
+        if (e.getInventory().getHolder() instanceof MeowilBoxSelfHolder) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onInventoryClickPetal(InventoryClickEvent e) {
-        if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxPetalHolder) {
+        if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxPetalHolder holder) {
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getCurrentItem())) {
                 e.setCancelled(true);
+                return;
             } else if (e.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD || e.getAction() == InventoryAction.HOTBAR_SWAP) {
                 if (MeowilBoxUtils.isMeowilBoxPetals(e.getView().getBottomInventory().getItem(e.getHotbarButton()))) {
                     e.setCancelled(true);
+                    return;
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onInventoryMovePetal(InventoryMoveItemEvent e) {
-        MeowilBoxPetalHolder holder = null;
-        if (e.getSource().getHolder() instanceof MeowilBoxPetalHolder) {
-            holder = (MeowilBoxPetalHolder) e.getSource().getHolder();
-        }
-        if (e.getDestination().getHolder() instanceof MeowilBoxPetalHolder) {
-            holder = (MeowilBoxPetalHolder) e.getDestination().getHolder();
-        }
-
-        if (holder != null) {
-            if (MeowilBoxUtils.isMeowilBoxPetals(e.getItem())) {
-                e.setCancelled(true);
             }
             Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), holder::saveData, 1); // FIXME: potential item duplicate bug? needs check
         }
