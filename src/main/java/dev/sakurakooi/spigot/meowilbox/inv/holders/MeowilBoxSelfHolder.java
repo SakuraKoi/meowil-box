@@ -22,17 +22,34 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
     @Getter
     private Inventory inventory;
 
+    /*
+    @Getter
+    private int currentPage = 1;
+    */
     public MeowilBoxSelfHolder(MailboxManager.MeowilBoxStorage storage, OfflinePlayer player) {
         this.storage = storage;
         this.player = player;
         this.inventory = Bukkit.createInventory(this, 36, Component.text(player.getName() + "'s Meowil box").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false));
 
-        // 0-26
-        // TODO load inventory
+        setCurrentPage(1);
 
-        inventory.setItem(27, ItemBuilder.createPlayerListButton());
-        inventory.setItem(28, ItemBuilder.createPaddingPane());
-        inventory.setItem(29, ItemBuilder.createPaddingPane());
+        for (int i = 27; i < 36; i++) {
+            if (i == 27) {
+                inventory.setItem(i, ItemBuilder.createPlayerListButton());
+            } else {
+                inventory.setItem(i, ItemBuilder.createPaddingPane());
+            }
+        }
+    }
+
+    public void setCurrentPage(int page) {
+        // this.currentPage = currentPage;
+
+        for (int i = 0, len = Math.min(storage.getContents().size(), 27); i < len; i++) {
+            inventory.setItem(i, storage.getContents().get(i));
+        }
+
+        /* 翻页先不写了xxx 处理物品存储太麻烦x
         if (hasPrevPage()) {
             inventory.setItem(30, ItemBuilder.createPrevPageButton());
         } else {
@@ -43,30 +60,21 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
             inventory.setItem(32, ItemBuilder.createNextPageButton());
         } else {
             inventory.setItem(32, ItemBuilder.createPageStopButton(true));
-        }
-        inventory.setItem(33, ItemBuilder.createPaddingPane());
-        inventory.setItem(34, ItemBuilder.createPaddingPane());
-        inventory.setItem(35, ItemBuilder.createPaddingPane());
+        }*/
     }
 
-    private int getCurrentPage() {
-        // TODO unimplemented
-        return 1;
-    }
-
+    /*
     private boolean hasPrevPage() {
-        // TODO unimplemented
-        return true;
+        return currentPage > 1;
     }
 
     private boolean hasNextPage() {
-        // TODO unimplemented
-        return false;
+        return storage.getContents().size() > currentPage * 27;
     }
-
+    */
     @Override
     public void saveData() {
-        storage.setContents(InventoryUtils.inventoryToList(inventory, 0, 27));
+        storage.setContents(InventoryUtils.inventoryToList(inventory, 0, 27));// FIXME support page
         storage.save();
     }
 

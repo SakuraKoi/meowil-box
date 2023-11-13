@@ -21,6 +21,7 @@ public class MeowilBoxUI {
     public static void openMailBox(Player player) {
         try {
             var holder = MeowilBox.getMailboxManager().getMailbox(player).getHolder();
+            holder.setCurrentPage(1);
             player.openInventory(holder.getInventory());
         } catch (ExecutionException e) {
             log.error("An error occurred while loading storage", e);
