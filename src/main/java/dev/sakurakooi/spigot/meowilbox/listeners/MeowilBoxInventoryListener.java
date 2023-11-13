@@ -16,19 +16,23 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 public class MeowilBoxInventoryListener implements Listener {
     @EventHandler
     public void onInventoryClickSelf(InventoryClickEvent e) {
-        if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSelfHolder) {
+        if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSelfHolder holder) {
             if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSelfHolder) {
                 if (e.getSlot() >= 27) {
                     e.setCancelled(true);
-                } else {
-                    InventoryAction action = e.getAction();
-                    if (action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_SOME || action == InventoryAction.PLACE_ONE || action == InventoryAction.SWAP_WITH_CURSOR) {
-                        e.setCancelled(true);
-                    } else if (action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD) {
-                        if (e.getView().getBottomInventory().getItem(e.getHotbarButton()) != null)
-                            e.setCancelled(true);
-                    }
+                    return;
                 }
+
+                InventoryAction action = e.getAction();
+                if (action == InventoryAction.PLACE_ALL || action == InventoryAction.PLACE_SOME || action == InventoryAction.PLACE_ONE || action == InventoryAction.SWAP_WITH_CURSOR) {
+                    e.setCancelled(true);
+                    return;
+                }
+                if ((action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD) && e.getView().getBottomInventory().getItem(e.getHotbarButton()) != null) {
+                    e.setCancelled(true);
+                    return;
+                }
+                Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), holder::saveData, 1);
             }
         }
     }
@@ -46,7 +50,8 @@ public class MeowilBoxInventoryListener implements Listener {
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getCurrentItem())) {
                 e.setCancelled(true);
                 return;
-            } else if (e.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD || e.getAction() == InventoryAction.HOTBAR_SWAP) {
+            }
+            if (e.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD || e.getAction() == InventoryAction.HOTBAR_SWAP) {
                 if (MeowilBoxUtils.isMeowilBoxPetals(e.getView().getBottomInventory().getItem(e.getHotbarButton()))) {
                     e.setCancelled(true);
                     return;
