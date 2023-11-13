@@ -17,7 +17,7 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
 
     public MeowilBoxSelfHolder(Player player) {
         this.player = player;
-        var inventory = Bukkit.createInventory(this, 45, Component.text("Petals")); // FIXME text
+        this.inventory = Bukkit.createInventory(this, 45, Component.text("Petals")); // FIXME text
 
         // 0-26
         // TODO load inventory
