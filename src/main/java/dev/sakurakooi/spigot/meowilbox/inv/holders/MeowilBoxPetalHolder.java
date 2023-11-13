@@ -23,7 +23,7 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
 
     public MeowilBoxPetalHolder(Player player, ItemStack petalItem) {
         this.petalItem = petalItem;
-        var inventory = Bukkit.createInventory(this, 27, Component.text("Petals"));
+        var inventory = Bukkit.createInventory(this, 27, Component.text("Petals")); // FIXME TEXT
         RtagItem tag = RtagItem.of(petalItem);
         var items = MeowilBoxInventoryUtils.getInventory(tag);
         items.forEach(inventory::setItem);
