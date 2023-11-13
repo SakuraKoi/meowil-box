@@ -10,16 +10,12 @@ import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Collections;
 
 public class MeowilBoxBlockListener implements Listener {
     @EventHandler
@@ -75,23 +71,14 @@ public class MeowilBoxBlockListener implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
             if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
                 e.setCancelled(true);
-                openMailBox(e.getPlayer());
-                e.getPlayer().getWorld().dropItem(e.getClickedBlock().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createItemPackage(e.getPlayer(), Collections.singletonList(MeowilBoxItemBuilder.createPetals()), false));
-                e.getPlayer().getWorld().dropItem(e.getClickedBlock().getLocation().toCenterLocation(), MeowilBoxItemBuilder.createItemPackage(e.getPlayer(), Collections.singletonList(MeowilBoxItemBuilder.createPetals()), true));
+                MeowilBoxUI.openMailBox(e.getPlayer());
             }
         } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getActiveItem())) {
                 e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
-                openPetals(e.getPlayer(), e.getPlayer().getActiveItem());
+                MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getActiveItem());
             }
         }
     }
 
-    private void openMailBox(Player player) {
-        // TODO
-    }
-
-    private void openPetals(Player player, ItemStack itemInHand) {
-        MeowilBoxUI.openPetalsInventory(player, itemInHand);
-    }
 }
