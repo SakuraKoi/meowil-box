@@ -43,7 +43,7 @@ public class MeowilBoxUtils {
         Objects.requireNonNull(stack);
         if (stack.getType() == Material.PLAYER_HEAD) {
             RtagItem tag = new RtagItem(stack);
-            return Objects.requireNonNullElse(tag.get("PublicBukkitValues", "meowilbox:petals_size"), 27);
+            return Objects.requireNonNullElse(tag.get("PublicBukkitValues", "meowilbox:petals_size"), 3);
         }
         throw new IllegalArgumentException("stack is not a MeowilBoxPetals");
     }

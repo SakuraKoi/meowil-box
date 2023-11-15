@@ -2,6 +2,7 @@ package dev.sakurakooi.spigot.meowilbox.inv;
 
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPetalHolder;
+import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPlayerListHolder;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -27,5 +28,10 @@ public class MeowilBoxUI {
             log.error("An error occurred while loading storage", e);
             player.sendMessage(Component.text("Error: MeowilBox failed load storage!").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         }
+    }
+
+    public static void openPlayerListFor(Player player) {
+        var holder = new MeowilBoxPlayerListHolder();
+        player.openInventory(holder.getInventory());
     }
 }

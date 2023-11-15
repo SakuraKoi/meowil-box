@@ -2,21 +2,21 @@ package dev.sakurakooi.spigot.meowilbox.inv.holders;
 
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 public abstract class MeowilBoxGuiHolder implements MeowilBoxHolder {
-    @Getter
     private Inventory inventory;
 
-    public MeowilBoxGuiHolder() {
+    public void postInitialize() {
         this.inventory = Bukkit.createInventory(this, 36, getInventoryTitle());
-
+        fillInventoryBar();
     }
 
     public abstract Component getInventoryTitle();
@@ -32,7 +32,16 @@ public abstract class MeowilBoxGuiHolder implements MeowilBoxHolder {
 
     public abstract ItemStack fillCustomButton(int slot);
 
-    public abstract boolean handleButtonClick(int slot);
+    public abstract boolean handleButtonClick(@NotNull Player player, int slot);
 
     public abstract boolean canPickup(int slot);
+
+    public abstract boolean canPlaceAt(int slot);
+
+    public @NotNull Inventory getInventory() {
+        if (this.inventory == null)
+            throw new IllegalStateException("Code bug detected: inventory not initialized, call postInitialize() before use");
+
+        return this.inventory;
+    }
 }

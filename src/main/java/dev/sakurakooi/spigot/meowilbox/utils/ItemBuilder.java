@@ -138,6 +138,15 @@ public class ItemBuilder {
         return item;
     }
 
+    public static ItemStack createMyMailboxButton() {
+        String texture = "http://textures.minecraft.net/texture/4af50f172a510fa60b2af0cbb84f371536c965ea550881253f7ecd26407969eb";
+        ItemStack item = createCustomHead(texture, "我的喵箱", AQUA, lores -> {});
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
+        return item;
+    }
+
     public static ItemStack createSendButton() {
         String texture = "http://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
         ItemStack item = createCustomHead(texture, "寄信", AQUA, lores -> {});
@@ -216,6 +225,15 @@ public class ItemBuilder {
         ArrayList<Component> lore = new ArrayList<>();
         loreHandler.accept(lore);
         meta.lore(lore);
+        head.setItemMeta(meta);
+        return head;
+    }
+
+    public static ItemStack createPlayerHead(OfflinePlayer offlinePlayer) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) head.getItemMeta();
+        meta.setOwningPlayer(offlinePlayer);
+        meta.displayName(Component.text(Objects.requireNonNullElse(offlinePlayer.getName(), offlinePlayer.getUniqueId().toString()), YELLOW).decoration(ITALIC, false));
         head.setItemMeta(meta);
         return head;
     }
