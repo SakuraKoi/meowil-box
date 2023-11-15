@@ -30,6 +30,8 @@ public abstract class MeowilBoxGuiHolder implements MeowilBoxHolder {
         }
     }
 
+    public abstract void updatePage();
+
     public abstract ItemStack fillCustomButton(int slot);
 
     public abstract boolean handleButtonClick(@NotNull Player player, int slot);

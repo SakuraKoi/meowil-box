@@ -35,9 +35,7 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
     public void setCurrentPage(int page) {
         // this.currentPage = currentPage;
 
-        for (int i = 0, len = Math.min(storage.getContents().size(), 27); i < len; i++) {
-            getInventory().setItem(i, storage.getContents().get(i));
-        }
+        updatePage();
 
         /* 翻页先不写了xxx 处理物品存储太麻烦x
         if (hasPrevPage()) {
@@ -71,6 +69,18 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
     @Override
     public Component getInventoryTitle() {
         return Component.text(player.getName() + " 的喵箱").color(NamedTextColor.BLUE).decoration(TextDecoration.ITALIC, false);
+    }
+
+    @Override
+    public void updatePage() {
+        for (int i = 0; i < 27; i++) {
+            ItemStack item = null;
+            if (i < storage.getContents().size()) {
+                item = storage.getContents().get(i);
+            }
+            getInventory().setItem(i, item);
+        }
+
     }
 
     @Override

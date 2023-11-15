@@ -2,7 +2,6 @@ package dev.sakurakooi.spigot.meowilbox.inv.holders;
 
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxUI;
 import dev.sakurakooi.spigot.meowilbox.storage.MailboxManager;
-import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -12,62 +11,48 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import static net.kyori.adventure.text.format.NamedTextColor.DARK_RED;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
+import static net.kyori.adventure.text.format.TextDecoration.BOLD;
+import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
+
 @Slf4j
 public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
     private final MailboxManager.MeowilBoxStorage storage;
     @Getter
     private final OfflinePlayer player;
 
-    /*
-    @Getter
-    private int currentPage = 1;
-    */
     public MeowilBoxOtherHolder(MailboxManager.MeowilBoxStorage storage, OfflinePlayer player) {
         this.storage = storage;
         this.player = player;
         this.postInitialize();
-        setCurrentPage(1);
+        updatePage();
+
+        // TODO 翻页
     }
 
-    public void setCurrentPage(int page) {
-        // this.currentPage = currentPage;
-
-        for (int i = 0, len = Math.min(storage.getContents().size(), 27); i < len; i++) {
-            getInventory().setItem(i, storage.getContents().get(i));
-        }
-
-        /* 翻页先不写了xxx 处理物品存储太麻烦x
-        if (hasPrevPage()) {
-            inventory.setItem(30, ItemBuilder.createPrevPageButton());
-        } else {
-            inventory.setItem(30, ItemBuilder.createPageStopButton(false));
-        }
-        inventory.setItem(31, ItemBuilder.createPageButton(getCurrentPage()));
-        if (hasNextPage()) {
-            inventory.setItem(32, ItemBuilder.createNextPageButton());
-        } else {
-            inventory.setItem(32, ItemBuilder.createPageStopButton(true));
-        }*/
-    }
-
-    /*
-    private boolean hasPrevPage() {
-        return currentPage > 1;
-    }
-
-    private boolean hasNextPage() {
-        return storage.getContents().size() > currentPage * 27;
-    }
-    */
     @Override
     public void saveData() {
-        storage.setContents(InventoryUtils.inventoryToList(getInventory(), 0, 27));// FIXME support page
-        storage.save();
     }
 
     @Override
     public Component getInventoryTitle() {
         return Component.text(player.getName() + " 的喵箱");
+    }
+
+    @Override
+    public void updatePage() {
+        for (int i = 0; i < 27; i++) {
+            ItemStack item = null;
+            if (i < storage.getContents().size()) {
+                item = storage.getContents().get(i);
+            }
+            getInventory().setItem(i, item);
+        }
+        if (storage.getContents().size() >= 27) {
+            getInventory().setItem(28, ItemBuilder.createBlockButton(Component.text("✗ 寄纸箱不能 ✗").color(DARK_RED).decorate(BOLD).decoration(ITALIC, false),
+                    Component.text("这只猫猫的喵箱被塞满了!").color(RED).decoration(ITALIC, false)));
+        }
     }
 
     @Override

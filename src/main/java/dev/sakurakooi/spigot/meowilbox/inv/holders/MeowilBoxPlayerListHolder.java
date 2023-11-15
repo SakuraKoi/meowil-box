@@ -37,6 +37,16 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
 
     private void setCurrentPage(int page) {
         this.page = page;
+        updatePage();
+    }
+
+    @Override
+    public Component getInventoryTitle() {
+        return Component.text("喵窝").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
+    }
+
+    @Override
+    public void updatePage() {
         getInventory().setItem(33, page > 0 ? ItemBuilder.createPrevPageButton() : ItemBuilder.createPageStopButton(false));
         getInventory().setItem(34, ItemBuilder.createPageButton(page + 1));
         getInventory().setItem(35, page < (players.size() / 27) ? ItemBuilder.createNextPageButton() : ItemBuilder.createPageStopButton(true));
@@ -46,11 +56,6 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
         for (int i = start; i < end; i++) {
             getInventory().setItem(i - start, ItemBuilder.createPlayerHead(players.get(i)));
         }
-    }
-
-    @Override
-    public Component getInventoryTitle() {
-        return Component.text("喵窝").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
     }
 
     @Override

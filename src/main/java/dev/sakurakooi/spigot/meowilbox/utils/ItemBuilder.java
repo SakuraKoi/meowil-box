@@ -149,7 +149,7 @@ public class ItemBuilder {
 
     public static ItemStack createSendButton() {
         String texture = "http://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
-        ItemStack item = createCustomHead(texture, "寄信", AQUA, lores -> {});
+        ItemStack item = createCustomHead(texture, "寄纸箱", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
         });
@@ -186,7 +186,7 @@ public class ItemBuilder {
     public static ItemStack createPageStopButton(boolean directionNext) {
         String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
         ItemStack item = createCustomHead(texture, directionNext ? "下一页" : "上一页", RED, lores -> {
-            lores.add(Component.text("已... 已经一点也不剩了~♡").color(LIGHT_PURPLE).decoration(ITALIC, false));
+            lores.add(Component.text("已... 已经一点也不剩了~♡").color(LIGHT_PURPLE).decoration(ITALIC, false)); // OvO
         });
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -194,6 +194,16 @@ public class ItemBuilder {
         return item;
     }
 
+    public static ItemStack createBlockButton(Component name, Component lore) {
+        String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
+        ItemStack item = createCustomHead(texture, name, RED, lores -> {
+            lores.add(lore);
+        });
+        RtagItem.edit(item, tag -> {
+            tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
+        });
+        return item;
+    }
 
     public static ItemStack createPaddingPane() {
         ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
@@ -217,11 +227,12 @@ public class ItemBuilder {
         return item;
     }
 
+
     @NotNull
-    private static ItemStack createCustomHead(String texture, String itemName, TextColor nameColor, Consumer<ArrayList<Component>> loreHandler) {
+    private static ItemStack createCustomHead(String texture, Component itemName, TextColor nameColor, Consumer<ArrayList<Component>> loreHandler) {
         ItemStack head = SkullTexture.getTexturedHead(texture);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta.displayName(Component.text(itemName, nameColor).decoration(ITALIC, false));
+        meta.displayName(itemName);
         ArrayList<Component> lore = new ArrayList<>();
         loreHandler.accept(lore);
         meta.lore(lore);
@@ -229,11 +240,17 @@ public class ItemBuilder {
         return head;
     }
 
+    @NotNull
+    private static ItemStack createCustomHead(String texture, String itemName, TextColor nameColor, Consumer<ArrayList<Component>> loreHandler) {
+        return createCustomHead(texture, Component.text(itemName, nameColor).decoration(ITALIC, false), nameColor, loreHandler);
+    }
+
     public static ItemStack createPlayerHead(OfflinePlayer offlinePlayer) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
         meta.setOwningPlayer(offlinePlayer);
-        meta.displayName(Component.text(Objects.requireNonNullElse(offlinePlayer.getName(), offlinePlayer.getUniqueId().toString()), YELLOW).decoration(ITALIC, false));
+        meta.displayName(Component.text(Objects.requireNonNullElse(offlinePlayer.getName(), "#" + offlinePlayer.getUniqueId()) + " 的喵箱")
+                .color(YELLOW).decoration(ITALIC, false));
         head.setItemMeta(meta);
         return head;
     }

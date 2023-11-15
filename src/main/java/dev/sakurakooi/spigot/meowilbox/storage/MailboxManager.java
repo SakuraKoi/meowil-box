@@ -90,6 +90,9 @@ public class MailboxManager {
             Object tagCompound = TagCompound.newTag();
             TagCompound.set(tagCompound, "meowilbox", list);
             TagCompound.DATA.toFile(tagCompound, dataFile);
+
+            holder.updatePage();
+            otherHolder.updatePage();
         }
     }
 }

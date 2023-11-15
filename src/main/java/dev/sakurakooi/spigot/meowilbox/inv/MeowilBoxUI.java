@@ -43,7 +43,7 @@ public class MeowilBoxUI {
     public static void openOtherMailBox(Player player, OfflinePlayer offlinePlayer) {
         try {
             var holder = MeowilBox.getMailboxManager().getMailbox(offlinePlayer).getOtherHolder();
-            holder.setCurrentPage(1);
+            holder.updatePage();
             player.openInventory(holder.getInventory());
             player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
         } catch (ExecutionException e) {
