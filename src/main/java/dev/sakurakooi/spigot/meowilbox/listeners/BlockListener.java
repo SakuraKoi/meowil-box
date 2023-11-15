@@ -80,7 +80,6 @@ public class BlockListener implements Listener {
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getInventory().getItemInMainHand())) {
                 e.setCancelled(true);
                 MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getInventory().getHeldItemSlot(), e.getPlayer().getInventory().getItemInMainHand());
-                return;
             }
         }
     }

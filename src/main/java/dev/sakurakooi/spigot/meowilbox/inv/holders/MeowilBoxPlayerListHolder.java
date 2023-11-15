@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
-    private ArrayList<OfflinePlayer> players;
+    private final ArrayList<OfflinePlayer> players;
     private int page = 0;
 
     public MeowilBoxPlayerListHolder() {

@@ -49,8 +49,7 @@ public final class MeowilBox extends JavaPlugin {
     @Override
     public void onDisable() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getOpenInventory().getTopInventory().getHolder() instanceof MeowilBoxHolder) {
-                MeowilBoxHolder holder = (MeowilBoxHolder) player.getOpenInventory().getTopInventory().getHolder();
+            if (player.getOpenInventory().getTopInventory().getHolder() instanceof MeowilBoxHolder holder) {
                 holder.saveData();
                 player.closeInventory();
             }

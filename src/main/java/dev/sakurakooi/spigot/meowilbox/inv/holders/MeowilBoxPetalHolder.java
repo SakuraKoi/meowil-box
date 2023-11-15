@@ -19,7 +19,7 @@ import static net.kyori.adventure.text.format.TextDecoration.ITALIC;
 
 public class MeowilBoxPetalHolder implements MeowilBoxHolder {
     @Getter
-    private Inventory inventory;
+    private final Inventory inventory;
 
     private final Player player;
     private final int heldItemSlot;

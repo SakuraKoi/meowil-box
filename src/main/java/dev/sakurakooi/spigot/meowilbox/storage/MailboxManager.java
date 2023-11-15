@@ -24,8 +24,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class MailboxManager {
-    private File dataDir;
-    private LoadingCache<UUID, MeowilBoxStorage> storage = CacheBuilder.newBuilder()
+    private final File dataDir;
+    private final LoadingCache<UUID, MeowilBoxStorage> storage = CacheBuilder.newBuilder()
             .expireAfterAccess(Duration.ofHours(1))
             .removalListener(this::onUnload)
             .build(new MeowilBoxLoader());
@@ -58,18 +58,19 @@ public class MailboxManager {
                 }
                 return new MeowilBoxStorage(uuid, file, contents);
             } else {
-               return new MeowilBoxStorage(uuid, file, new ArrayList<>());
+                return new MeowilBoxStorage(uuid, file, new ArrayList<>());
             }
         }
     }
 
     public static class MeowilBoxStorage {
         @Getter
-        private MeowilBoxSelfHolder holder;
+        private final MeowilBoxSelfHolder holder;
         @Getter
-        private MeowilBoxOtherHolder otherHolder;
-        private File dataFile;
-        @Getter @Setter
+        private final MeowilBoxOtherHolder otherHolder;
+        private final File dataFile;
+        @Getter
+        @Setter
         private ArrayList<ItemStack> contents;
 
         public MeowilBoxStorage(UUID owner, File dataFile, ArrayList<ItemStack> contents) {
@@ -87,7 +88,7 @@ public class MailboxManager {
             }
 
             Object tagCompound = TagCompound.newTag();
-            TagCompound.set(tagCompound,"meowilbox", list);
+            TagCompound.set(tagCompound, "meowilbox", list);
             TagCompound.DATA.toFile(tagCompound, dataFile);
         }
     }

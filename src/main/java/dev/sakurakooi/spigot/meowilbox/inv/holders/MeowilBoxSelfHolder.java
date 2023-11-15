@@ -19,7 +19,7 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
 
     private final MailboxManager.MeowilBoxStorage storage;
     @Getter
-    private OfflinePlayer player;
+    private final OfflinePlayer player;
 
     /*
     @Getter

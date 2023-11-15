@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MeowilBoxSendHolder implements MeowilBoxHolder {
     @Getter
-    private Inventory inventory;
+    private final Inventory inventory;
     private final Player sender;
     private final OfflinePlayer targetPlayer;
 
