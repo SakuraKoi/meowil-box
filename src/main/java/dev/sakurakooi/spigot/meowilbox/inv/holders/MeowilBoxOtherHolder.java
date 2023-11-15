@@ -7,8 +7,6 @@ import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -69,14 +67,14 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
 
     @Override
     public Component getInventoryTitle() {
-        return Component.text(player.getName() + " 的喵箱").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
+        return Component.text(player.getName() + " 的喵箱");
     }
 
     @Override
     public ItemStack fillCustomButton(int slot) {
-        if (slot == 31)
+        if (slot == 27)
             return ItemBuilder.createPlayerListButton();
-        if (slot == 32)
+        if (slot == 28)
             return ItemBuilder.createSendButton();
 
         return null;
@@ -84,11 +82,11 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
 
     @Override
     public boolean handleButtonClick(@NotNull Player player, int slot) {
-        if (slot == 31) {
+        if (slot == 27) {
             MeowilBoxUI.openPlayerListFor(player);
             return true;
         }
-        if (slot ==32) {
+        if (slot == 28) {
             MeowilBoxUI.openSendMailFor(player, this.player);
             return true;
         }

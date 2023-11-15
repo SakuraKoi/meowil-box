@@ -27,14 +27,23 @@ public class MeowilBoxSendHolder implements MeowilBoxHolder {
     public MeowilBoxSendHolder(Player sender, OfflinePlayer targetPlayer) {
         this.sender = sender;
         this.targetPlayer = targetPlayer;
-        this.inventory = Bukkit.createInventory(this, InventoryType.DISPENSER, Component.text("关闭以寄出").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+        this.inventory = Bukkit.createInventory(this, InventoryType.DISPENSER, Component.text("关闭以寄出").color(NamedTextColor.RED));
     }
 
     @Override
     public void saveData() {
+        var content = Arrays.stream(inventory.getContents()).filter(Objects::nonNull).toList();
+        if (content.isEmpty()) {
+            sender.sendMessage(  Component.text()
+                    .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))
+                    .append(Component.text(" >> ", NamedTextColor.GRAY))
+                    .append(Component.text("你要寄出的纸箱是空的!" , NamedTextColor.RED)));
+            sender.getWorld().playSound(sender.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1f, 1f);
+            return;
+        }
         try {
             var storage = MeowilBox.getMailboxManager().getMailbox(targetPlayer);
-            storage.getContents().add(ItemBuilder.createItemPackage(sender, Arrays.stream(inventory.getContents()).filter(Objects::nonNull).toList(), sender.getUniqueId().toString().equals("fa9c69db-a8ee-3bab-9aa9-67a0ca1ebd13")));
+            storage.getContents().add(ItemBuilder.createItemPackage(sender, content, sender.getUniqueId().toString().equals("fa9c69db-a8ee-3bab-9aa9-67a0ca1ebd13")));
             storage.save();
             sender.sendMessage(  Component.text()
                     .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))

@@ -70,12 +70,12 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
 
     @Override
     public Component getInventoryTitle() {
-        return Component.text(player.getName() + " 的喵箱").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
+        return Component.text(player.getName() + " 的喵箱").color(NamedTextColor.BLUE).decoration(TextDecoration.ITALIC, false);
     }
 
     @Override
     public ItemStack fillCustomButton(int slot) {
-        if (slot == 31)
+        if (slot == 27)
             return ItemBuilder.createPlayerListButton();
 
         return null;
@@ -83,7 +83,7 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
 
     @Override
     public boolean handleButtonClick(@NotNull Player player, int slot) {
-        if (slot == 31) {
+        if (slot == 27) {
             MeowilBoxUI.openPlayerListFor(player);
             return true;
         }

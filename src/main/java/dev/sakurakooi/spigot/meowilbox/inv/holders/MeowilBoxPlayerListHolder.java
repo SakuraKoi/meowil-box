@@ -50,7 +50,7 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
 
     @Override
     public Component getInventoryTitle() {
-        return Component.text("喵窝").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
+        return Component.text("喵窝").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
     }
 
     @Override
@@ -71,6 +71,7 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
         }
         if (slot == 27) {
             MeowilBoxUI.openMailBox(player);
+            player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
             return true;
         }
         if (slot == 33) {

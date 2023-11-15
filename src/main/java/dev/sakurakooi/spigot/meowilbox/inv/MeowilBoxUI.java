@@ -55,6 +55,6 @@ public class MeowilBoxUI {
     public static void openSendMailFor(Player player, OfflinePlayer targetPlayer) {
         var holder = new MeowilBoxSendHolder(player, targetPlayer);
         player.openInventory(holder.getInventory());
-        player.playSound(player.getLocation(), Sound.ITEM_HONEYCOMB_WAX_ON, 1f, 1f);
+        player.playSound(player.getLocation(), Sound.BLOCK_BARREL_OPEN, 1f, 1f);
     }
 }
