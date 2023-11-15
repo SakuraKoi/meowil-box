@@ -52,6 +52,8 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
         if (storage.getContents().size() >= 27) {
             getInventory().setItem(28, ItemBuilder.createBlockButton(Component.text("✗ 寄纸箱不能 ✗").color(DARK_RED).decorate(BOLD).decoration(ITALIC, false),
                     Component.text("这只猫猫的喵箱被塞满了!").color(RED).decoration(ITALIC, false)));
+        } else {
+            getInventory().setItem(28, ItemBuilder.createSendButton());
         }
     }
 
@@ -72,7 +74,9 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
             return true;
         }
         if (slot == 28) {
-            MeowilBoxUI.openSendMailFor(player, this.player);
+            if (storage.getContents().size() < 27) {
+                MeowilBoxUI.openSendMailFor(player, this.player);
+            }
             return true;
         }
         return false;

@@ -18,17 +18,18 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class MeowilBoxUI {
-    public static boolean openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
-        if (player.getOpenInventory().getType() != InventoryType.CRAFTING)
-            return false;
+    public static void openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
+        var currentInvType = player.getOpenInventory().getType();
+        if (currentInvType != InventoryType.CRAFTING && currentInvType != InventoryType.CREATIVE)
+            return;
         var holder = new MeowilBoxPetalHolder(player, heldItemSlot, petalItem);
         player.openInventory(holder.getInventory());
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
-        return true;
     }
 
     public static boolean openMailBox(Player player, boolean checkOpen) {
-        if (checkOpen && player.getOpenInventory().getType() != InventoryType.CRAFTING)
+        var currentInvType = player.getOpenInventory().getType();
+        if (checkOpen && currentInvType != InventoryType.CRAFTING && currentInvType != InventoryType.CREATIVE)
             return false;
         try {
             var holder = MeowilBox.getMailboxManager().getMailbox(player).getHolder();
