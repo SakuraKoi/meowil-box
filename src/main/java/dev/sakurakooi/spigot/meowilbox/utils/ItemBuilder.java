@@ -107,7 +107,7 @@ public class ItemBuilder {
         String texture = sakura ?
                 "https://textures.minecraft.net/texture/8b45faf5b17744f1ff2f3acddc89a35823ca2e471d02302e7f59cc458697fb66" :
                 "https://textures.minecraft.net/texture/fa85971fb13bf0b78eb9f96b2bdce1a11331373de30d9239e8bc06a2912c4a4";
-        ItemStack item = createCustomHead(texture, "包裹", sakura ? TextColor.color(0xff4081) : GREEN, lores -> {
+        ItemStack item = createCustomHead(texture, "纸箱", sakura ? TextColor.color(0xff4081) : GREEN, lores -> {
             lores.add(Component.text()
                     .append(Component.text("来自: ").color(GRAY).decoration(ITALIC, false))
                     .append(Component.text(Objects.requireNonNullElse(from.getName(), from.getUniqueId().toString())).color(YELLOW).decoration(ITALIC, false)).asComponent());
@@ -115,7 +115,7 @@ public class ItemBuilder {
                     .append(Component.text("时间: ").color(GRAY).decoration(ITALIC, false))
                     .append(Component.text(dateFormat.format(new Date())).color(YELLOW).decoration(ITALIC, false)).asComponent());
             lores.add(Component.text(""));
-            lores.add(Component.text("打破以拆开包裹").color(AQUA).decoration(ITALIC, false).decorate(BOLD));
+            lores.add(Component.text("放置并打破以拆开").color(AQUA).decoration(ITALIC, false));
         });
 
 
