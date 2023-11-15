@@ -6,6 +6,8 @@ import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,7 +39,7 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
 
     @Override
     public Component getInventoryTitle() {
-        return Component.text(player.getName() + " 的喵箱");
+        return Component.text(player.getName() + " 的喵箱").color(NamedTextColor.BLUE).decoration(TextDecoration.ITALIC, false);
     }
 
     @Override

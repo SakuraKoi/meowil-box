@@ -42,7 +42,7 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
 
     @Override
     public Component getInventoryTitle() {
-        return Component.text("喵窝").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
+        return Component.text("喵窝").color(NamedTextColor.BLUE).decoration(TextDecoration.ITALIC, false);
     }
 
     @Override
