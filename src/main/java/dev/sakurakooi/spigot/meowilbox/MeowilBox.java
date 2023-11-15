@@ -35,7 +35,7 @@ public final class MeowilBox extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommonInventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new PetalInventoryListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SelfMailboxInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new MailboxInventoryListener(), this);
         Bukkit.getConsoleSender().sendMessage(
                 Component.text()
                         .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))

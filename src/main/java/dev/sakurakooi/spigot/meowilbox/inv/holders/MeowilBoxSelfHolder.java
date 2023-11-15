@@ -79,6 +79,9 @@ public class MeowilBoxSelfHolder implements MeowilBoxHolder {
     }
 
     public void handleButtonClick(int slot) {
+        if (slot == 27) {
+
+        }
         // TODO unimplemented
     }
 }
