@@ -8,6 +8,7 @@ import com.saicone.rtag.item.ItemObject;
 import com.saicone.rtag.tag.TagCompound;
 import com.saicone.rtag.tag.TagList;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
+import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxOtherHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -66,14 +66,17 @@ public class MailboxManager {
     public static class MeowilBoxStorage {
         @Getter
         private MeowilBoxSelfHolder holder;
+        @Getter
+        private MeowilBoxOtherHolder otherHolder;
         private File dataFile;
         @Getter @Setter
-        private List<ItemStack> contents;
+        private ArrayList<ItemStack> contents;
 
         public MeowilBoxStorage(UUID owner, File dataFile, ArrayList<ItemStack> contents) {
             this.dataFile = dataFile;
             this.contents = contents;
             this.holder = new MeowilBoxSelfHolder(this, Bukkit.getOfflinePlayer(owner));
+            this.otherHolder = new MeowilBoxOtherHolder(this, Bukkit.getOfflinePlayer(owner));
         }
 
         public void save() {

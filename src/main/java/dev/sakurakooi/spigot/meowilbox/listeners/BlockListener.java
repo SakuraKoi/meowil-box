@@ -73,12 +73,12 @@ public class BlockListener implements Listener {
                 if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
                     e.setCancelled(true);
                     MeowilBoxUI.openMailBox(e.getPlayer());
+                    e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.BLOCK_CHEST_OPEN, 0.75f, 1.2f);
                     return;
                 }
             }
             if (MeowilBoxUtils.isMeowilBoxPetals(e.getPlayer().getInventory().getItemInMainHand())) {
                 e.setCancelled(true);
-                e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
                 MeowilBoxUI.openPetalsInventory(e.getPlayer(), e.getPlayer().getInventory().getHeldItemSlot(), e.getPlayer().getInventory().getItemInMainHand());
                 return;
             }

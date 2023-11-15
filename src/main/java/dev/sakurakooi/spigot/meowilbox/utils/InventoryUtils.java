@@ -5,10 +5,7 @@ import com.saicone.rtag.item.ItemTagStream;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,11 +37,11 @@ public class InventoryUtils {
     }
 
 
-    public static List<ItemStack> inventoryToList(Inventory inventory, int start, int end) {
+    public static ArrayList<ItemStack> inventoryToList(Inventory inventory, int start, int end) {
         return IntStream.range(start, end).boxed()
                 .map(inventory::getItem)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static Map<Integer, ItemStack> inventoryToMap(Inventory inventory, int start, int end) {
