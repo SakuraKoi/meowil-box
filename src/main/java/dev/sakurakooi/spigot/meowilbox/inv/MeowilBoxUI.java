@@ -11,26 +11,34 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class MeowilBoxUI {
-    public static void openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
+    public static boolean openPetalsInventory(Player player, int heldItemSlot, ItemStack petalItem) {
+        if (player.getOpenInventory().getType() != InventoryType.CRAFTING)
+            return false;
         var holder = new MeowilBoxPetalHolder(player, heldItemSlot, petalItem);
         player.openInventory(holder.getInventory());
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1f, 1f);
+        return true;
     }
 
-    public static void openMailBox(Player player) {
+    public static boolean openMailBox(Player player, boolean checkOpen) {
+        if (checkOpen && player.getOpenInventory().getType() != InventoryType.CRAFTING)
+            return false;
         try {
             var holder = MeowilBox.getMailboxManager().getMailbox(player).getHolder();
             holder.setCurrentPage(1);
             player.openInventory(holder.getInventory());
+            return true;
         } catch (ExecutionException e) {
             log.error("An error occurred while loading storage", e);
             player.sendMessage(Component.text("Error: MeowilBox failed load storage!").color(NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+            return false;
         }
     }
 

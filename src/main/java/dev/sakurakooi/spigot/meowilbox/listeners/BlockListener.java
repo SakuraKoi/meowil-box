@@ -72,8 +72,9 @@ public class BlockListener implements Listener {
             if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null) {
                 if (MeowilBoxUtils.isMeowilBox(e.getClickedBlock())) {
                     e.setCancelled(true);
-                    MeowilBoxUI.openMailBox(e.getPlayer());
-                    e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.BLOCK_CHEST_OPEN, 0.75f, 1.2f);
+                    if (MeowilBoxUI.openMailBox(e.getPlayer(), true)) {
+                        e.getPlayer().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.BLOCK_CHEST_OPEN, 0.75f, 1.2f);
+                    }
                     return;
                 }
             }

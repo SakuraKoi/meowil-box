@@ -75,7 +75,7 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
             }
         }
         if (slot == 27) {
-            MeowilBoxUI.openMailBox(player);
+            MeowilBoxUI.openMailBox(player, false);
             player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
             return true;
         }
