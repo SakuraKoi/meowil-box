@@ -22,7 +22,6 @@ public class MailboxInventoryListener implements Listener {
     @EventHandler
     public void onInventoryClickSelf(InventoryClickEvent e) {
         if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxGuiHolder holder) {
-            // TODO potential bug: check MOVE_TO_OTHER_INVENTORY while clicked self inv
             if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxGuiHolder) {
                 if (holder.handleButtonClick((Player) e.getView().getPlayer(), e.getSlot())) {
                     e.setCancelled(true);
@@ -38,7 +37,7 @@ public class MailboxInventoryListener implements Listener {
                 }
                 if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
                     if (action == SWAP_WITH_CURSOR && e.getView().getTopInventory().getHolder() instanceof MeowilBoxPlayerListHolder && e.getSlot() == 34) {
-                        if (e.getCursor() != null && e.getCursor().getType() == Material.CHERRY_SAPLING && e.getCursor().getAmount() % 9 == 0) {
+                        if (e.getCursor().getType() == Material.CHERRY_SAPLING && e.getCursor().getAmount() % 9 == 0) {
                             e.setCancelled(true);
                             e.setCursor(ItemBuilder.createPetals(Math.max(1, e.getCursor().getAmount() / 9)));
                             return;
@@ -59,7 +58,6 @@ public class MailboxInventoryListener implements Listener {
             }
         } else if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSendHolder holder) {
             InventoryAction action = e.getAction();
-            System.out.println(action);
             if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder) {
                 if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
                     if (checkSendItem(e.getCursor())) {
