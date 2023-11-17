@@ -80,7 +80,6 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
             }
             getInventory().setItem(i, item);
         }
-
     }
 
     @Override

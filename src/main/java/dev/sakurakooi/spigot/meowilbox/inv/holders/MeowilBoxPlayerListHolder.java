@@ -20,7 +20,9 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
     private int page = 0;
 
     public MeowilBoxPlayerListHolder() {
-        players = new ArrayList<>(Arrays.asList(Bukkit.getOfflinePlayers()));
+        players = new ArrayList<>(Arrays.stream(Bukkit.getOfflinePlayers()).filter(player -> {
+            return true;
+        }).toList());
         postInitialize();
     }
 
@@ -51,10 +53,15 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
         getInventory().setItem(34, ItemBuilder.createPageButton(page + 1));
         getInventory().setItem(35, page < (players.size() / 27) ? ItemBuilder.createNextPageButton() : ItemBuilder.createPageStopButton(true));
 
+
         int start = page * 27;
         int end = Math.min(start + 27, players.size());
-        for (int i = start; i < end; i++) {
-            getInventory().setItem(i - start, ItemBuilder.createPlayerHead(players.get(i)));
+        for (int i = 0; i < 27; i++) {
+            ItemStack item = null;
+            if (i < end) {
+                item = ItemBuilder.createPlayerHead(players.get(start + i));
+            }
+            getInventory().setItem(i, item);
         }
     }
 
@@ -68,7 +75,7 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
 
     @Override
     public boolean handleButtonClick(@NotNull Player player, int slot) {
-        if (slot < 27 ) {
+        if (slot < 27) {
             if (slot + page * 27 < players.size()) {
                 MeowilBoxUI.openOtherMailBox(player, players.get(slot + page * 27));
                 return true;

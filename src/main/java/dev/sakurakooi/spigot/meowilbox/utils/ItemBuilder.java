@@ -248,6 +248,7 @@ public class ItemBuilder {
     public static ItemStack createPlayerHead(OfflinePlayer offlinePlayer) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
+        meta.setPlayerProfile(offlinePlayer.getPlayerProfile());
         meta.setOwningPlayer(offlinePlayer);
         meta.displayName(Component.text(Objects.requireNonNullElse(offlinePlayer.getName(), "#" + offlinePlayer.getUniqueId()) + " 的喵箱")
                 .color(YELLOW).decoration(ITALIC, false));

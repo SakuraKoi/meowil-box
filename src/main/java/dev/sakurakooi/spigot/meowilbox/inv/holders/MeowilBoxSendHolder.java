@@ -50,6 +50,16 @@ public class MeowilBoxSendHolder implements MeowilBoxHolder {
                     .append(Component.text(" >> ", NamedTextColor.GRAY))
                     .append(Component.text("给 " + targetPlayer.getName() + " 的纸箱已寄出!w" , NamedTextColor.GREEN)));
             sender.getWorld().playSound(sender.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, 1f, 1.5f);
+            if (targetPlayer.isOnline()) {
+                Player player = targetPlayer.getPlayer();
+                if (player != null) {
+                    player.sendMessage(  Component.text()
+                            .append(Component.text("MeowilBox", NamedTextColor.YELLOW, TextDecoration.BOLD))
+                            .append(Component.text(" >> ", NamedTextColor.GRAY))
+                            .append(Component.text("你收到了一个来自 " + sender.getName() + " 的纸箱!w" , NamedTextColor.GOLD)));
+                    player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, 0.4f, 1.5f);
+                } // else should not happen
+            }
         } catch (ExecutionException e) {
             Arrays.stream(inventory.getContents()).filter(Objects::nonNull).forEach(itemStack -> sender.getWorld().dropItem(sender.getLocation(), itemStack));
             sender.sendMessage(  Component.text()
