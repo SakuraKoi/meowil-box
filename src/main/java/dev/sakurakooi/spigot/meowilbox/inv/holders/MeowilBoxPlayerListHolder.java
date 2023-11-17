@@ -1,5 +1,6 @@
 package dev.sakurakooi.spigot.meowilbox.inv.holders;
 
+import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxUI;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -20,8 +21,9 @@ public class MeowilBoxPlayerListHolder extends MeowilBoxGuiHolder {
     private int page = 0;
 
     public MeowilBoxPlayerListHolder() {
-        players = new ArrayList<>(Arrays.stream(Bukkit.getOfflinePlayers()).filter(player -> {
-            return true;
+        var mailboxPlacedPlayers = MeowilBox.getInstance().getConfig().getStringList("mailboxPlacedPlayers");
+        players = new ArrayList<>(Arrays.stream(Bukkit.getOfflinePlayers()).filter(player -> { // TODO
+            return mailboxPlacedPlayers.contains(player.getUniqueId().toString());
         }).toList());
         postInitialize();
     }

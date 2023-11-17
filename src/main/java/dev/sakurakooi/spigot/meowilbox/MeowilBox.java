@@ -1,8 +1,8 @@
 package dev.sakurakooi.spigot.meowilbox;
 
-import dev.sakurakooi.spigot.meowilbox.storage.MailboxManager;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.listeners.*;
+import dev.sakurakooi.spigot.meowilbox.storage.MailboxManager;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +26,8 @@ public final class MeowilBox extends JavaPlugin {
     @Getter
     private static final ArrayList<NamespacedKey> registeredCraftRecipes = new ArrayList<>();
 
-
+    @Getter
+    private FileConfiguration configuration;
     @Override
     public void onEnable() {
         instance = this;

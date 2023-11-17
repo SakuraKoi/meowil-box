@@ -27,6 +27,14 @@ public class BlockListener implements Listener {
             RtagBlock.edit(e.getBlockPlaced(), tag -> {
                 tag.set(item.get("PublicBukkitValues", "meowilbox:mailbox_mark"), "PublicBukkitValues", "meowilbox:mailbox_mark");
             });
+            Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), () -> {
+                var mailboxPlacedPlayers = MeowilBox.getInstance().getConfig().getStringList("mailboxPlacedPlayers");
+                if (!mailboxPlacedPlayers.contains(e.getPlayer().getUniqueId().toString())) {
+                    mailboxPlacedPlayers.add(e.getPlayer().getUniqueId().toString());
+                    MeowilBox.getInstance().getConfig().set("mailboxPlacedPlayers", mailboxPlacedPlayers);
+                    MeowilBox.getInstance().saveConfig();
+                }
+            }, 1);
         }
         if (MeowilBoxUtils.isMeowilBoxPackage(e.getItemInHand())) {
             RtagItem item = new RtagItem(e.getItemInHand());
