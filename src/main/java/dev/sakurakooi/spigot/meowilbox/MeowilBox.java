@@ -56,6 +56,13 @@ public final class MeowilBox extends JavaPlugin {
                 player.closeInventory();
             }
         }
+
+        // Prevent cause plugin reload failed with PlugmanX or other management plugin.
+        // It uses Paper patched method, will not able to run on pure Spigot.
+        for (var rl : registeredCraftRecipes) {
+            Bukkit.getServer().removeRecipe(rl, true);  // qyl: Kooi writes this bug, Chao!
+        }
+        Bukkit.getServer().removeRecipe(new NamespacedKey(getInstance(), "rainbow_mailbox"), true);
     }
 
     private void registerCraftRecipe() {
