@@ -1,16 +1,21 @@
 package dev.sakurakooi.spigot.meowilbox.utils;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.saicone.rtag.RtagItem;
-import com.saicone.rtag.util.SkullTexture;
+import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Consumer;
@@ -103,6 +108,9 @@ public class ItemBuilder {
         return item;
     }
 
+    // https://minecraft-heads.com/custom-heads/decoration/52724-loot-bag
+    // https://minecraft-heads.com/custom-heads/decoration/64903-halloween-mystery-st-chest
+    // https://minecraft-heads.com/custom-heads/decoration/65683-snow-present
     public static ItemStack createItemPackage(OfflinePlayer from, List<ItemStack> items, boolean sakura) {
         String texture = sakura ?
                 "https://textures.minecraft.net/texture/8b45faf5b17744f1ff2f3acddc89a35823ca2e471d02302e7f59cc458697fb66" :
@@ -227,11 +235,24 @@ public class ItemBuilder {
         return item;
     }
 
+    private static final UUID RANDOM_UUID = UUID.fromString("AwAwAwAw-AwAw-AwAw-AwAw-AwAwAwAwAwAw");
+
+    @SneakyThrows(MalformedURLException.class)
+    private static PlayerProfile getProfile(String url) {
+        PlayerProfile profile = Bukkit.createProfile(RANDOM_UUID);
+        PlayerTextures textures = profile.getTextures();
+        URL urlObject = new URL(url);
+        textures.setSkin(urlObject);
+        profile.setTextures(textures);
+        return profile;
+    }
+
 
     @NotNull
     private static ItemStack createCustomHead(String texture, Component itemName, TextColor nameColor, Consumer<ArrayList<Component>> loreHandler) {
-        ItemStack head = SkullTexture.getTexturedHead(texture);
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
+        meta.setOwnerProfile(getProfile(texture));
         meta.displayName(itemName);
         ArrayList<Component> lore = new ArrayList<>();
         loreHandler.accept(lore);
