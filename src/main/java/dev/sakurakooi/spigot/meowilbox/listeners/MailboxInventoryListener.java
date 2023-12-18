@@ -16,8 +16,10 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import static org.bukkit.event.inventory.InventoryAction.*;
@@ -104,15 +106,25 @@ public class MailboxInventoryListener implements Listener {
     @EventHandler
     public void onInventoryDragSelf(InventoryDragEvent e) {
         if (e.getInventory().getHolder() instanceof MeowilBoxGuiHolder holder) {
-            if (e.getInventorySlots().stream().anyMatch(slot -> !holder.canPlaceAt(slot)))
+            if (e.getInventorySlots().stream().anyMatch(slot -> !holder.canPlaceAt(slot))) {
                 e.setCancelled(true);
-        } else if (e.getInventory().getHolder() instanceof MeowilBoxSendHolder ||
-                e.getInventory().getHolder() instanceof MeowilBoxPetalHolder ||
-                e.getInventory().getType() == InventoryType.SHULKER_BOX) {
-            if (e.getCursor() != null && checkBlacklistItemPlace(e.getCursor())) {
-                e.setCancelled(true);
-            } else if (e.getNewItems().values().stream().anyMatch(this::checkBlacklistItemPlace)) {
-                e.setCancelled(true);
+                return;
+            }
+        }
+
+        List<Inventory> inventoryList = e.getRawSlots().stream().map(slot -> e.getView().getInventory(slot)).distinct().toList();
+        for (Inventory inv : inventoryList) {
+             if (inv.getHolder() instanceof MeowilBoxSendHolder || inv.getHolder() instanceof MeowilBoxPetalHolder ||
+                     inv.getType() == InventoryType.SHULKER_BOX) {
+                if (e.getCursor() != null && checkBlacklistItemPlace(e.getCursor())) {
+                    e.setCancelled(true);
+                    return;
+                }
+
+                if (e.getNewItems().values().stream().anyMatch(this::checkBlacklistItemPlace)) {
+                    e.setCancelled(true);
+                    return;
+                }
             }
         }
     }
