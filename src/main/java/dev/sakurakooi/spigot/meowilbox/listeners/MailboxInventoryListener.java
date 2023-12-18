@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import static org.bukkit.event.inventory.InventoryAction.*;
@@ -80,11 +81,35 @@ public class MailboxInventoryListener implements Listener {
                     }
                 }
             }
+        } else if (e.getInventory().getType() == InventoryType.SHULKER_BOX) {
+            InventoryAction action = e.getAction();
+            if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder) {
+                if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
+                    if (checkSendItem(e.getCursor())) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+                if (action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD) {
+                    var hotbarItem = e.getView().getBottomInventory().getItem(e.getHotbarButton());
+                    if (hotbarItem != null && checkSendItem(hotbarItem)) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            } else {
+                if (action == MOVE_TO_OTHER_INVENTORY) {
+                    if (e.getCurrentItem() != null && checkSendItem(e.getCurrentItem())) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            }
         }
     }
 
     private boolean checkSendItem(ItemStack cursor) {
-        return cursor.getType().name().endsWith("SHULKER_BOX") || MeowilBoxUtils.isMeowilBoxPackage(cursor);
+        return cursor.getType().name().endsWith("SHULKER_BOX") || MeowilBoxUtils.isMeowilBoxPackage(cursor) || MeowilBoxUtils.isMeowilBoxPetals(cursor);
     }
 
     @EventHandler
