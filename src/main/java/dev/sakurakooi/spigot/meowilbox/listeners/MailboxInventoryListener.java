@@ -37,7 +37,7 @@ public class MailboxInventoryListener implements Listener {
                 }
                 if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
                     if (action == SWAP_WITH_CURSOR && e.getView().getTopInventory().getHolder() instanceof MeowilBoxPlayerListHolder && e.getSlot() == 34) {
-                        if (e.getCursor().getType() == Material.CHERRY_SAPLING && e.getCursor().getAmount() % 9 == 0) {
+                        if (e.getCursor().getType() == Material.CHERRY_SAPLING && e.getCursor().getAmount() % 9 == 0 && e.getCursor().getAmount() <= 54) {
                             e.setCancelled(true);
                             e.setCursor(ItemBuilder.createPetals(Math.max(1, e.getCursor().getAmount() / 9)));
                             return;
@@ -84,7 +84,7 @@ public class MailboxInventoryListener implements Listener {
     }
 
     private boolean checkSendItem(ItemStack cursor) {
-        return cursor.getType() == Material.SHULKER_BOX || MeowilBoxUtils.isMeowilBoxPackage(cursor);
+        return cursor.getType().name().endsWith("SHULKER_BOX") || MeowilBoxUtils.isMeowilBoxPackage(cursor);
     }
 
     @EventHandler
