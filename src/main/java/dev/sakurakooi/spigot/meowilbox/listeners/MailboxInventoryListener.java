@@ -2,6 +2,7 @@ package dev.sakurakooi.spigot.meowilbox.listeners;
 
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxGuiHolder;
+import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPetalHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxPlayerListHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSendHolder;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
@@ -16,6 +17,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Supplier;
 
 import static org.bukkit.event.inventory.InventoryAction.*;
 
@@ -57,58 +60,44 @@ public class MailboxInventoryListener implements Listener {
             } else if (e.getAction() == MOVE_TO_OTHER_INVENTORY) {
                 e.setCancelled(true);
             }
-        } else if (e.getView().getTopInventory().getHolder() instanceof MeowilBoxSendHolder holder) {
+        }
+
+        checkBlacklistPlace(e, () -> e.getView().getTopInventory().getHolder() instanceof MeowilBoxSendHolder,
+                () -> e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder);
+        checkBlacklistPlace(e, () -> e.getView().getTopInventory().getHolder() instanceof MeowilBoxPetalHolder,
+                () -> e.getClickedInventory().getHolder() instanceof MeowilBoxPetalHolder);
+        checkBlacklistPlace(e, () -> e.getView().getTopInventory().getType() == InventoryType.SHULKER_BOX,
+                () -> e.getClickedInventory().getType() == InventoryType.SHULKER_BOX);
+    }
+
+    private void checkBlacklistPlace(InventoryClickEvent e, Supplier<Boolean> applyCheckCondition, Supplier<Boolean> currentInventoryCondition) {
+        if (applyCheckCondition.get()) {
             InventoryAction action = e.getAction();
-            if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder) {
+            if (e.getClickedInventory() != null && currentInventoryCondition.get()) {
                 if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
-                    if (checkSendItem(e.getCursor())) {
+                    if (checkBlacklistItemPlace(e.getCursor())) {
                         e.setCancelled(true);
                         return;
                     }
                 }
-                if (action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD) {
+
+                if ((action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD)) {
                     var hotbarItem = e.getView().getBottomInventory().getItem(e.getHotbarButton());
-                    if (hotbarItem != null && checkSendItem(hotbarItem)) {
+                    if (hotbarItem != null && checkBlacklistItemPlace(hotbarItem)) {
                         e.setCancelled(true);
                         return;
                     }
                 }
-            } else {
-                if (action == MOVE_TO_OTHER_INVENTORY) {
-                    if (e.getCurrentItem() != null && checkSendItem(e.getCurrentItem())) {
-                        e.setCancelled(true);
-                        return;
-                    }
-                }
-            }
-        } else if (e.getInventory().getType() == InventoryType.SHULKER_BOX) {
-            InventoryAction action = e.getAction();
-            if (e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder) {
-                if (action == PLACE_ALL || action == PLACE_SOME || action == PLACE_ONE || action == SWAP_WITH_CURSOR) {
-                    if (checkSendItem(e.getCursor())) {
-                        e.setCancelled(true);
-                        return;
-                    }
-                }
-                if (action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD) {
-                    var hotbarItem = e.getView().getBottomInventory().getItem(e.getHotbarButton());
-                    if (hotbarItem != null && checkSendItem(hotbarItem)) {
-                        e.setCancelled(true);
-                        return;
-                    }
-                }
-            } else {
-                if (action == MOVE_TO_OTHER_INVENTORY) {
-                    if (e.getCurrentItem() != null && checkSendItem(e.getCurrentItem())) {
-                        e.setCancelled(true);
-                        return;
-                    }
+            } else if (e.getAction() == MOVE_TO_OTHER_INVENTORY) {
+                if (e.getCurrentItem() != null && checkBlacklistItemPlace(e.getCurrentItem())) {
+                    e.setCancelled(true);
+                    return;
                 }
             }
         }
     }
 
-    private boolean checkSendItem(ItemStack cursor) {
+    private boolean checkBlacklistItemPlace(ItemStack cursor) {
         return cursor.getType().name().endsWith("SHULKER_BOX") || MeowilBoxUtils.isMeowilBoxPackage(cursor) || MeowilBoxUtils.isMeowilBoxPetals(cursor);
     }
 
@@ -117,10 +106,12 @@ public class MailboxInventoryListener implements Listener {
         if (e.getInventory().getHolder() instanceof MeowilBoxGuiHolder holder) {
             if (e.getInventorySlots().stream().anyMatch(slot -> !holder.canPlaceAt(slot)))
                 e.setCancelled(true);
-        } else if (e.getInventory().getHolder() instanceof MeowilBoxSendHolder) {
-            if (e.getCursor() != null && checkSendItem(e.getCursor())) {
+        } else if (e.getInventory().getHolder() instanceof MeowilBoxSendHolder ||
+                e.getInventory().getHolder() instanceof MeowilBoxPetalHolder ||
+                e.getInventory().getType() == InventoryType.SHULKER_BOX) {
+            if (e.getCursor() != null && checkBlacklistItemPlace(e.getCursor())) {
                 e.setCancelled(true);
-            } else if (e.getNewItems().values().stream().anyMatch(this::checkSendItem)) {
+            } else if (e.getNewItems().values().stream().anyMatch(this::checkBlacklistItemPlace)) {
                 e.setCancelled(true);
             }
         }

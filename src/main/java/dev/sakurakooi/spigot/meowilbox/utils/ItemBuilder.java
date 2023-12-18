@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Consumer;
@@ -235,7 +236,7 @@ public class ItemBuilder {
         return item;
     }
 
-    private static final UUID RANDOM_UUID = UUID.fromString("AwAwAwAw-AwAw-AwAw-AwAw-AwAwAwAwAwAw");
+    private static final UUID RANDOM_UUID = UUID.nameUUIDFromBytes("SakurAwA".getBytes(StandardCharsets.UTF_8));
 
     @SneakyThrows(MalformedURLException.class)
     private static PlayerProfile getProfile(String url) {
