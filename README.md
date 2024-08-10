@@ -2,4 +2,6 @@
 
 为 Catopia 服务器开发的邮箱插件。
 
-Target: `Paper 1.20.6`
+Target: `Paper 1.21`
+
+Used textures by [MrNob0t](https://MrNobot.Net).
