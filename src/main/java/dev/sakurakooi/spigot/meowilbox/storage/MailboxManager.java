@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
 import com.saicone.rtag.item.ItemObject;
+import com.saicone.rtag.stream.TStream;
 import com.saicone.rtag.tag.TagCompound;
 import com.saicone.rtag.tag.TagList;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.time.Duration;
@@ -45,10 +47,10 @@ public class MailboxManager {
 
     private class MeowilBoxLoader extends CacheLoader<UUID, MeowilBoxStorage> {
         @Override
-        public MeowilBoxStorage load(UUID uuid) {
+        public @NotNull MeowilBoxStorage load(UUID uuid) {
             File file = new File(dataDir, uuid.toString() + ".nbt");
             if (file.exists()) {
-                Object tagCompound = TagCompound.DATA.fromFile(file);
+                Object tagCompound = TStream.COMPOUND.fromFile(file);
                 Object list = TagCompound.get(tagCompound, "meowilbox");
                 int count = TagList.size(list);
                 ArrayList<ItemStack> contents = new ArrayList<>(count);
@@ -89,7 +91,7 @@ public class MailboxManager {
 
             Object tagCompound = TagCompound.newTag();
             TagCompound.set(tagCompound, "meowilbox", list);
-            TagCompound.DATA.toFile(tagCompound, dataFile);
+            TStream.COMPOUND.toFile(tagCompound, dataFile);
 
             holder.updatePage();
             otherHolder.updatePage();

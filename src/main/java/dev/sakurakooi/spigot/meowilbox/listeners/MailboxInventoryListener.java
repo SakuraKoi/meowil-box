@@ -54,7 +54,7 @@ public class MailboxInventoryListener implements Listener {
                         return;
                     }
                 }
-                if ((action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD) && e.getView().getBottomInventory().getItem(e.getHotbarButton()) != null) {
+                if ((action == HOTBAR_SWAP) && e.getView().getBottomInventory().getItem(e.getHotbarButton()) != null) {
                     e.setCancelled(true);
                     return;
                 }
@@ -65,11 +65,11 @@ public class MailboxInventoryListener implements Listener {
         }
 
         checkBlacklistPlace(e, () -> e.getView().getTopInventory().getHolder() instanceof MeowilBoxSendHolder,
-                () -> e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder);
+                () -> e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxSendHolder);
         checkBlacklistPlace(e, () -> e.getView().getTopInventory().getHolder() instanceof MeowilBoxPetalHolder,
-                () -> e.getClickedInventory().getHolder() instanceof MeowilBoxPetalHolder);
+                () -> e.getClickedInventory() != null && e.getClickedInventory().getHolder() instanceof MeowilBoxPetalHolder);
         checkBlacklistPlace(e, () -> e.getView().getTopInventory().getType() == InventoryType.SHULKER_BOX,
-                () -> e.getClickedInventory().getType() == InventoryType.SHULKER_BOX);
+                () -> e.getClickedInventory() != null && e.getClickedInventory().getType() == InventoryType.SHULKER_BOX);
     }
 
     private void checkBlacklistPlace(InventoryClickEvent e, Supplier<Boolean> applyCheckCondition, Supplier<Boolean> currentInventoryCondition) {
@@ -83,7 +83,7 @@ public class MailboxInventoryListener implements Listener {
                     }
                 }
 
-                if ((action == HOTBAR_SWAP || action == HOTBAR_MOVE_AND_READD)) {
+                if ((action == HOTBAR_SWAP)) {
                     var hotbarItem = e.getView().getBottomInventory().getItem(e.getHotbarButton());
                     if (hotbarItem != null && checkBlacklistItemPlace(hotbarItem)) {
                         e.setCancelled(true);
