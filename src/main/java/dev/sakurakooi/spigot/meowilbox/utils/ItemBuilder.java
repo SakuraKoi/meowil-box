@@ -15,6 +15,8 @@ import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -97,7 +99,7 @@ public class ItemBuilder {
             }
             case WHITE_WOOL: {
                 itemName = "Rainbow Meowil box";
-                yield "http://textures.minecraft.net/texture/328cb8a572e3ce993ccec4f69e6f37a859cd5ce0d466b80a123c094935ed4c22";
+                yield "https://textures.minecraft.net/texture/328cb8a572e3ce993ccec4f69e6f37a859cd5ce0d466b80a123c094935ed4c22";
             }
             default:
                 throw new IllegalArgumentException("Unexpected material: " + material);
@@ -137,7 +139,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createPetals(int size) {
-        String texture = "http://textures.minecraft.net/texture/9aef19d2e2a658f33b5c25d1aeae01e83320dd385eceb6a766cfe547ffc03dad";
+        String texture = "https://textures.minecraft.net/texture/9aef19d2e2a658f33b5c25d1aeae01e83320dd385eceb6a766cfe547ffc03dad";
         ItemStack item = createCustomHead(texture, "樱花手袋", TextColor.color(0xff4081), lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set(UUID.randomUUID().toString(), "PublicBukkitValues", "meowilbox:petals_mark");
@@ -148,7 +150,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createMyMailboxButton() {
-        String texture = "http://textures.minecraft.net/texture/4af50f172a510fa60b2af0cbb84f371536c965ea550881253f7ecd26407969eb";
+        String texture = "https://textures.minecraft.net/texture/4af50f172a510fa60b2af0cbb84f371536c965ea550881253f7ecd26407969eb";
         ItemStack item = createCustomHead(texture, "我的喵箱", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -157,7 +159,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createSendButton() {
-        String texture = "http://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
+        String texture = "https://textures.minecraft.net/texture/a7ed66f5a70209d821167d156fdbc0ca3bf11ad54ed5d86e75c265f7e5029ec1";
         ItemStack item = createCustomHead(texture, "寄纸箱", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -166,7 +168,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createPlayerListButton() {
-        String texture = "http://textures.minecraft.net/texture/259e8d4196fea827025c2927a6fcd6e98d030057371238a77ae4cddebce86477";
+        String texture = "https://textures.minecraft.net/texture/259e8d4196fea827025c2927a6fcd6e98d030057371238a77ae4cddebce86477";
         ItemStack item = createCustomHead(texture, "串门", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -175,7 +177,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createNextPageButton() {
-        String texture = "http://textures.minecraft.net/texture/291ac432aa40d7e7a687aa85041de636712d4f022632dd5356c880521af2723a";
+        String texture = "https://textures.minecraft.net/texture/291ac432aa40d7e7a687aa85041de636712d4f022632dd5356c880521af2723a";
         ItemStack item = createCustomHead(texture, "下一页", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -184,7 +186,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createPrevPageButton() {
-        String texture = "http://textures.minecraft.net/texture/7a2c12cb22918384e0a81c82a1ed99aebdce94b2ec2754800972319b57900afb";
+        String texture = "https://textures.minecraft.net/texture/7a2c12cb22918384e0a81c82a1ed99aebdce94b2ec2754800972319b57900afb";
         ItemStack item = createCustomHead(texture, "上一页", AQUA, lores -> {});
         RtagItem.edit(item, tag -> {
             tag.set("nya", "PublicBukkitValues", "meowilbox:ui_button");
@@ -193,7 +195,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createPageStopButton(boolean directionNext) {
-        String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
+        String texture = "https://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
         ItemStack item = createCustomHead(texture, directionNext ? "下一页" : "上一页", RED, lores -> {
             lores.add(Component.text("已... 已经一点也不剩了~♡").color(LIGHT_PURPLE).decoration(ITALIC, false)); // OvO
         });
@@ -204,7 +206,7 @@ public class ItemBuilder {
     }
 
     public static ItemStack createBlockButton(Component name, Component lore) {
-        String texture = "http://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
+        String texture = "https://textures.minecraft.net/texture/bb72ad8369eb6cd8990cec1f54d1778442a108b0186622c5918eb85159e2fb9e";
         ItemStack item = createCustomHead(texture, name, RED, lores -> {
             lores.add(lore);
         });
@@ -238,22 +240,21 @@ public class ItemBuilder {
 
     private static final UUID RANDOM_UUID = UUID.nameUUIDFromBytes("SakurAwA".getBytes(StandardCharsets.UTF_8));
 
-    @SneakyThrows(MalformedURLException.class)
+    @SneakyThrows({MalformedURLException.class, URISyntaxException.class})
     private static PlayerProfile getProfile(String url) {
         PlayerProfile profile = Bukkit.createProfile(RANDOM_UUID);
         PlayerTextures textures = profile.getTextures();
-        URL urlObject = new URL(url);
+        URL urlObject = new URI(url).toURL();
         textures.setSkin(urlObject);
         profile.setTextures(textures);
         return profile;
     }
 
-
     @NotNull
     private static ItemStack createCustomHead(String texture, Component itemName, TextColor nameColor, Consumer<ArrayList<Component>> loreHandler) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
-        meta.setOwnerProfile(getProfile(texture));
+        meta.setPlayerProfile(getProfile(texture));
         meta.displayName(itemName);
         ArrayList<Component> lore = new ArrayList<>();
         loreHandler.accept(lore);
