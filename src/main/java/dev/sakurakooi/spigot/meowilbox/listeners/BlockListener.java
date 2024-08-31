@@ -63,6 +63,7 @@ public class BlockListener implements Listener {
         if (MeowilBoxUtils.isMeowilBoxPackage(e.getBlock())) {
             e.setDropItems(false);
             RtagBlock tag = new RtagBlock(e.getBlock());
+            InventoryUtils.checkAndUpdateData(tag);
             var items = InventoryUtils.getItemContent(tag);
             Bukkit.getScheduler().runTaskLater(MeowilBox.getInstance(), () -> {
                 items.forEach(item -> {

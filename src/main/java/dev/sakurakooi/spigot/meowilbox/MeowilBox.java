@@ -3,6 +3,7 @@ package dev.sakurakooi.spigot.meowilbox;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxHolder;
 import dev.sakurakooi.spigot.meowilbox.listeners.*;
 import dev.sakurakooi.spigot.meowilbox.storage.MailboxManager;
+import dev.sakurakooi.spigot.meowilbox.utils.DfuUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -33,6 +34,11 @@ public final class MeowilBox extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        try {
+            DfuUtils.initialize();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException("Unexpected error caught while initializing DFU", e);
+        }
         mailboxManager = new MailboxManager();
         registerCraftingRecipe();
         Bukkit.getPluginManager().registerEvents(new RecipeListener(), this);

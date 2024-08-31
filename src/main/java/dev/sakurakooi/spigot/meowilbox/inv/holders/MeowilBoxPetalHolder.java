@@ -34,6 +34,7 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
         this.inventory = Bukkit.createInventory(this, MeowilBoxUtils.getMeowilBoxPetalsSize(petalItem) * 9, Objects.requireNonNullElse(petalItem.getItemMeta().displayName(),
                 Component.text("樱花手袋").color(TextColor.color(0xff4081)).decoration(ITALIC, false)));
         RtagItem tag = RtagItem.of(petalItem);
+        InventoryUtils.checkAndUpdateData(tag);
         var items = InventoryUtils.getInventory(tag);
         items.forEach(inventory::setItem);
     }

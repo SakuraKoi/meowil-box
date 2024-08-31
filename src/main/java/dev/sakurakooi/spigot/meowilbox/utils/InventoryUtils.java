@@ -1,7 +1,11 @@
 package dev.sakurakooi.spigot.meowilbox.utils;
 
+import com.saicone.rtag.RtagBlock;
 import com.saicone.rtag.RtagEditor;
+import com.saicone.rtag.RtagItem;
 import com.saicone.rtag.item.ItemTagStream;
+import com.saicone.rtag.tag.TagBase;
+import com.saicone.rtag.tag.TagCompound;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,5 +52,23 @@ public class InventoryUtils {
         return IntStream.range(start, end).boxed()
                 .filter(index -> inventory.getItem(index) != null)
                 .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll);
+    }
+
+    public static boolean checkAndUpdateData(RtagEditor<?> tag) {
+        if (tag.hasTag("PublicBukkitValues", "meowilbox:data_version")) {
+            int version = tag.get("PublicBukkitValues", "meowilbox:data_version");
+            // TODO
+        } else {
+            // FIXME
+        }
+    }
+
+    public static void checkAndUpdateData(Object tagCompound) {
+        if (TagCompound.hasKey(tagCompound, "data_version")) {
+            int version = (int) TagBase.getValue(TagCompound.get(tagCompound, "data_version"));
+
+        } else {
+
+        }
     }
 }

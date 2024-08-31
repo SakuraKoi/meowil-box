@@ -11,6 +11,7 @@ import com.saicone.rtag.tag.TagList;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxOtherHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
+import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -19,16 +20,16 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class MailboxManager {
     private final File dataDir;
     private final LoadingCache<UUID, MeowilBoxStorage> storage = CacheBuilder.newBuilder()
-            .expireAfterAccess(Duration.ofHours(1))
+            .expireAfterAccess(1, TimeUnit.HOURS)
             .removalListener(this::onUnload)
             .build(new MeowilBoxLoader());
 
@@ -51,6 +52,7 @@ public class MailboxManager {
             File file = new File(dataDir, uuid.toString() + ".nbt");
             if (file.exists()) {
                 Object tagCompound = TStream.COMPOUND.fromFile(file);
+                InventoryUtils.checkAndUpdateData(tagCompound);
                 Object list = TagCompound.get(tagCompound, "meowilbox");
                 int count = TagList.size(list);
                 ArrayList<ItemStack> contents = new ArrayList<>(count);
