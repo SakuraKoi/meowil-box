@@ -91,6 +91,6 @@ public class MeowilBoxOtherHolder extends MeowilBoxGuiHolder {
 
     @Override
     public boolean canPlaceAt(int slot) {
-        return false;
+        return slot > 36;
     }
 }

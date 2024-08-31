@@ -106,7 +106,7 @@ public class MailboxInventoryListener implements Listener {
     @EventHandler
     public void onInventoryDragSelf(InventoryDragEvent e) {
         if (e.getInventory().getHolder() instanceof MeowilBoxGuiHolder holder) {
-            if (e.getInventorySlots().stream().anyMatch(slot -> !holder.canPlaceAt(slot))) {
+            if (e.getRawSlots().stream().anyMatch(slot -> !holder.canPlaceAt(slot))) {
                 e.setCancelled(true);
                 return;
             }

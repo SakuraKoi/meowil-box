@@ -106,6 +106,6 @@ public class MeowilBoxSelfHolder extends MeowilBoxGuiHolder {
 
     @Override
     public boolean canPlaceAt(int slot) {
-        return false;
+        return slot > 36;
     }
 }
