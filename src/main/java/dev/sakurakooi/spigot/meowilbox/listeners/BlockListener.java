@@ -4,6 +4,7 @@ import com.saicone.rtag.RtagBlock;
 import com.saicone.rtag.RtagItem;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.MeowilBoxUI;
+import dev.sakurakooi.spigot.meowilbox.utils.DfuUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.ItemBuilder;
 import dev.sakurakooi.spigot.meowilbox.utils.MeowilBoxUtils;
@@ -40,6 +41,7 @@ public class BlockListener implements Listener {
             RtagItem item = new RtagItem(e.getItemInHand());
             RtagBlock.edit(e.getBlockPlaced(), tag -> {
                 tag.set("nya", "PublicBukkitValues", "meowilbox:package_mark");
+                tag.set(DfuUtils.getDataVersion(), "PublicBukkitValues", "meowilbox:data_version");
                 tag.set(item.get("PublicBukkitValues", "meowilbox:item_content"), "PublicBukkitValues", "meowilbox:item_content");
             });
         }
