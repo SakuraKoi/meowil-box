@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class RecipeListener implements Listener {
     @EventHandler
     public void onLogin(PlayerJoinEvent e) {
-        for (var entry : MeowilBox.getRegisteredCraftRecipes().entrySet()) {
+        for (var entry : MeowilBox.getInstance().getCraftingRecipes().entrySet()) {
             if (!entry.getValue()) {
                 var id = entry.getKey();
                 if (!e.getPlayer().hasDiscoveredRecipe(id)) {
@@ -21,6 +21,7 @@ public class RecipeListener implements Listener {
 
     @EventHandler
     public void onServerResourcesReload(ServerResourcesReloadedEvent event) {
-        MeowilBox.getInstance().registerCraftRecipe();
+        MeowilBox.getInstance().unregisterCraftingRecipe();
+        MeowilBox.getInstance().registerCraftingRecipe();
     }
 }
