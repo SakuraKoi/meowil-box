@@ -46,8 +46,8 @@ public class DfuUtils {
         nbtOps = (DynamicOps) fieldNbtOpsInstance.get(null);
     }
 
-    // MinecraftServer.getServer().fixerUpper.update(DataConverterTypes.ITEM_STACK, new Dynamic(DynamicOpsNBT.INSTANCE, savedStack), version, CraftMagicNumbers.INSTANCE.getDataVersion()).getValue();
-    public static Object update(Object nbtTagCompound, int version) {
-        return dfu.update(dataFixerTypesItemStack, new Dynamic(nbtOps, nbtTagCompound), version, dataVersion).getValue();
+    // MinecraftServer.getServer().getFixerUpper().update(References.ITEM_STACK, new Dynamic(NbtOps.INSTANCE, itemStackNbtTagCompound), version, CraftMagicNumbers.INSTANCE.getDataVersion()).getValue();
+    public static Object update(Object itemStackNbtTagCompound, int version) {
+        return dfu.update(dataFixerTypesItemStack, new Dynamic(nbtOps, itemStackNbtTagCompound), version, dataVersion).getValue();
     }
 }
