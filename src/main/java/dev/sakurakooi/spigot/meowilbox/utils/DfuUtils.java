@@ -2,8 +2,8 @@ package dev.sakurakooi.spigot.meowilbox.utils;
 
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 import com.saicone.rtag.util.EasyLookup;
 import com.saicone.rtag.util.ServerInstance;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
