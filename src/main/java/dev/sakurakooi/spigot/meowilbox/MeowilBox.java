@@ -16,7 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class MeowilBox extends JavaPlugin {
     @Getter
@@ -24,7 +25,8 @@ public final class MeowilBox extends JavaPlugin {
     @Getter
     private static MailboxManager mailboxManager;
     @Getter
-    private static final ArrayList<NamespacedKey> registeredCraftRecipes = new ArrayList<>();
+    // Map<NamespacedKey RecipeId, Boolean IsHidden>
+    private final Map<NamespacedKey, Boolean> craftingRecipes = new HashMap<>();
 
     @Getter
     private FileConfiguration configuration;
@@ -32,7 +34,7 @@ public final class MeowilBox extends JavaPlugin {
     public void onEnable() {
         instance = this;
         mailboxManager = new MailboxManager();
-        registerCraftRecipe();
+        registerCraftingRecipe();
         Bukkit.getPluginManager().registerEvents(new RecipeListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommonInventoryListener(), this);
@@ -50,38 +52,36 @@ public final class MeowilBox extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        unregisterCraftingRecipe();
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getOpenInventory().getTopInventory().getHolder() instanceof MeowilBoxHolder holder) {
                 holder.saveData();
                 player.closeInventory();
             }
         }
-
-        // Prevent cause plugin reload failed with PlugmanX or other management plugin.
-        // It uses Paper patched method, will not able to run on pure Spigot.
-        for (var rl : registeredCraftRecipes) {
-            Bukkit.getServer().removeRecipe(rl, true);  // qyl: Kooi writes this bug, Chao!
-        }
-        Bukkit.getServer().removeRecipe(new NamespacedKey(getInstance(), "rainbow_mailbox"), true);
     }
 
-    private void registerCraftRecipe() {
-        registeredCraftRecipes.add(register(Material.ACACIA_PLANKS, "acacia_mailbox"));
-        registeredCraftRecipes.add(register(Material.BAMBOO_PLANKS, "bamboo_mailbox"));
-        registeredCraftRecipes.add(register(Material.BIRCH_PLANKS, "birch_mailbox"));
-        registeredCraftRecipes.add(register(Material.CHERRY_PLANKS, "cherry_mailbox"));
-        registeredCraftRecipes.add(register(Material.COBBLESTONE, "cobblestone_mailbox"));
-        registeredCraftRecipes.add(register(Material.CRIMSON_PLANKS, "crimson_mailbox"));
-        registeredCraftRecipes.add(register(Material.DARK_OAK_PLANKS, "dark_oak_mailbox"));
-        registeredCraftRecipes.add(register(Material.JUNGLE_PLANKS, "jungle_mailbox"));
-        registeredCraftRecipes.add(register(Material.MANGROVE_PLANKS, "mangrove_mailbox"));
-        registeredCraftRecipes.add(register(Material.OAK_PLANKS, "oak_mailbox"));
-        registeredCraftRecipes.add(register(Material.SANDSTONE, "sandstone_mailbox"));
-        registeredCraftRecipes.add(register(Material.SPRUCE_PLANKS, "spruce_mailbox"));
-        registeredCraftRecipes.add(register(Material.STONE, "stone_mailbox"));
-        registeredCraftRecipes.add(register(Material.WARPED_PLANKS, "warped_mailbox"));
-        registeredCraftRecipes.add(register(Material.BRICK, "brick_mailbox"));
-        registeredCraftRecipes.add(register(Material.STONE_BRICKS, "stonebrick_mailbox"));
+    // qyl27: Fix due to spigot bug.
+    // https://hub.spigotmc.org/jira/browse/SPIGOT-6084
+    // https://github.com/PaperMC/Paper/pull/4833
+    public void registerCraftingRecipe() {
+        registerRecipe(Material.ACACIA_PLANKS, "acacia_mailbox");
+        registerRecipe(Material.BAMBOO_PLANKS, "bamboo_mailbox");
+        registerRecipe(Material.BIRCH_PLANKS, "birch_mailbox");
+        registerRecipe(Material.CHERRY_PLANKS, "cherry_mailbox");
+        registerRecipe(Material.COBBLESTONE, "cobblestone_mailbox");
+        registerRecipe(Material.CRIMSON_PLANKS, "crimson_mailbox");
+        registerRecipe(Material.DARK_OAK_PLANKS, "dark_oak_mailbox");
+        registerRecipe(Material.JUNGLE_PLANKS, "jungle_mailbox");
+        registerRecipe(Material.MANGROVE_PLANKS, "mangrove_mailbox");
+        registerRecipe(Material.OAK_PLANKS, "oak_mailbox");
+        registerRecipe(Material.SANDSTONE, "sandstone_mailbox");
+        registerRecipe(Material.SPRUCE_PLANKS, "spruce_mailbox");
+        registerRecipe(Material.STONE, "stone_mailbox");
+        registerRecipe(Material.WARPED_PLANKS, "warped_mailbox");
+        registerRecipe(Material.BRICK, "brick_mailbox");
+        registerRecipe(Material.STONE_BRICKS, "stonebrick_mailbox");
 
         // Easter egg
         NamespacedKey key = new NamespacedKey(getInstance(), "rainbow_mailbox");
@@ -97,17 +97,28 @@ public final class MeowilBox extends JavaPlugin {
         recipe.setIngredient('D', Material.PINK_WOOL);
         recipe.setIngredient('E', Material.ENDER_EYE);
         recipe.setGroup("Meowil box");
-        Bukkit.getServer().addRecipe(recipe);
+        registerRecipe(recipe, true);
     }
 
-    public static NamespacedKey register(Material material, String name) {
+    public void unregisterCraftingRecipe() {
+        for (var rl : craftingRecipes.entrySet()) {
+            Bukkit.getServer().removeRecipe(rl.getKey(), true);
+        }
+        craftingRecipes.clear();
+    }
+
+    private void registerRecipe(Material material, String name) {
         NamespacedKey key = new NamespacedKey(getInstance(), name);
         ShapedRecipe recipe = new ShapedRecipe(key, ItemBuilder.createMailbox(material));
         recipe.shape("WWW", "WEW", "WWW");
         recipe.setIngredient('W', material);
         recipe.setIngredient('E', Material.ENDER_EYE);
         recipe.setGroup("Meowil box");
+        registerRecipe(recipe, false);
+    }
+
+    private void registerRecipe(ShapedRecipe recipe, boolean hidden) {
         Bukkit.getServer().addRecipe(recipe);
-        return key;
+        craftingRecipes.put(recipe.getKey(), hidden);
     }
 }

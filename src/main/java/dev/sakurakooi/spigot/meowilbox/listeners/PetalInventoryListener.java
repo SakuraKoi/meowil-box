@@ -17,7 +17,7 @@ public class PetalInventoryListener implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            if (e.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD || e.getAction() == InventoryAction.HOTBAR_SWAP) {
+            if (e.getAction() == InventoryAction.HOTBAR_SWAP) {
                 if (MeowilBoxUtils.isMeowilBoxPetals(e.getView().getBottomInventory().getItem(e.getHotbarButton()))) {
                     e.setCancelled(true);
                     return;

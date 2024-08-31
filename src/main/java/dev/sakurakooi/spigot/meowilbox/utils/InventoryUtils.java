@@ -10,23 +10,23 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class InventoryUtils {
-    public static List<ItemStack> getItemContent(RtagEditor<?> tag) {
+    public static List<ItemStack> getItemContent(RtagEditor<?, ?> tag) {
         List<Map<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_content");
         return nbtList.stream().map(ItemTagStream.INSTANCE::fromMap).collect(Collectors.toList());
     }
 
-    public static void setItemContent(RtagEditor<?> tag, List<ItemStack> items) {
+    public static void setItemContent(RtagEditor<?, ?> tag, List<ItemStack> items) {
         List<Map<String, Object>> nbtList = items.stream().map(ItemTagStream.INSTANCE::toMap).toList();
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_content");
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<Integer, ItemStack> getInventory(RtagEditor<?> tag) {
+    public static Map<Integer, ItemStack> getInventory(RtagEditor<?, ?> tag) {
         List<HashMap<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_inventory");
         return nbtList.stream().collect(Collectors.toMap(map -> (int)map.get("Slot"), map -> ItemTagStream.INSTANCE.fromMap((Map<String, Object>) map.get("Item"))));
     }
 
-    public static void setInventory(RtagEditor<?> tag, Map<Integer, ItemStack> items) {
+    public static void setInventory(RtagEditor<?, ?> tag, Map<Integer, ItemStack> items) {
         List<HashMap<String, Object>> nbtList = items.entrySet().stream().map(entry -> {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Slot", entry.getKey());
