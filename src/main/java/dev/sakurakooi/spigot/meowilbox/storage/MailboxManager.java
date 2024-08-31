@@ -6,11 +6,13 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
 import com.saicone.rtag.item.ItemObject;
 import com.saicone.rtag.stream.TStream;
+import com.saicone.rtag.tag.TagBase;
 import com.saicone.rtag.tag.TagCompound;
 import com.saicone.rtag.tag.TagList;
 import dev.sakurakooi.spigot.meowilbox.MeowilBox;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxOtherHolder;
 import dev.sakurakooi.spigot.meowilbox.inv.holders.MeowilBoxSelfHolder;
+import dev.sakurakooi.spigot.meowilbox.utils.DfuUtils;
 import dev.sakurakooi.spigot.meowilbox.utils.InventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -93,6 +95,7 @@ public class MailboxManager {
 
             Object tagCompound = TagCompound.newTag();
             TagCompound.set(tagCompound, "meowilbox", list);
+            TagCompound.set(tagCompound, "data_version", TagBase.newTag(DfuUtils.getDataVersion()));
             TStream.COMPOUND.toFile(tagCompound, dataFile);
 
             holder.updatePage();

@@ -5,6 +5,7 @@ import com.saicone.rtag.RtagMirror;
 import com.saicone.rtag.item.ItemTagStream;
 import com.saicone.rtag.tag.TagBase;
 import com.saicone.rtag.tag.TagCompound;
+import com.saicone.rtag.tag.TagList;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,6 +22,7 @@ public class InventoryUtils {
     public static void setItemContent(RtagEditor<?, ?> tag, List<ItemStack> items) {
         List<Map<String, Object>> nbtList = items.stream().map(ItemTagStream.INSTANCE::toMap).toList();
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_content");
+        tag.set(DfuUtils.getDataVersion(), "PublicBukkitValues", "meowilbox:data_version");
     }
 
     @SuppressWarnings("unchecked")
@@ -37,6 +39,7 @@ public class InventoryUtils {
             return map;
         }).toList();
         tag.set(nbtList, "PublicBukkitValues", "meowilbox:item_inventory");
+        tag.set(DfuUtils.getDataVersion(), "PublicBukkitValues", "meowilbox:data_version");
     }
 
 
@@ -97,7 +100,15 @@ public class InventoryUtils {
         }
 
         if (version < DfuUtils.getDataVersion()) {
+            Object list = TagCompound.get(tagCompound, "meowilbox");
+            int count = TagList.size(list);
+            for (int i = 0; i < count; i++) {
+                var nbtItem = TagList.get(list, i);
+                var updatedNbtItem = DfuUtils.update(nbtItem, version);
+                TagList.set(list, i, updatedNbtItem);
+            }
 
+            TagCompound.set(tagCompound, "data_version", TagBase.newTag(DfuUtils.getDataVersion()));
         }
     }
 }
