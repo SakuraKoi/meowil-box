@@ -1,8 +1,7 @@
 package dev.sakurakooi.spigot.meowilbox.utils;
 
-import com.saicone.rtag.RtagBlock;
 import com.saicone.rtag.RtagEditor;
-import com.saicone.rtag.RtagItem;
+import com.saicone.rtag.RtagMirror;
 import com.saicone.rtag.item.ItemTagStream;
 import com.saicone.rtag.tag.TagBase;
 import com.saicone.rtag.tag.TagCompound;
@@ -27,7 +26,7 @@ public class InventoryUtils {
     @SuppressWarnings("unchecked")
     public static Map<Integer, ItemStack> getInventory(RtagEditor<?, ?> tag) {
         List<HashMap<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_inventory");
-        return nbtList.stream().collect(Collectors.toMap(map -> (int)map.get("Slot"), map -> ItemTagStream.INSTANCE.fromMap((Map<String, Object>) map.get("Item"))));
+        return nbtList.stream().collect(Collectors.toMap(map -> (int) map.get("Slot"), map -> ItemTagStream.INSTANCE.fromMap((Map<String, Object>) map.get("Item"))));
     }
 
     public static void setInventory(RtagEditor<?, ?> tag, Map<Integer, ItemStack> items) {
@@ -54,20 +53,50 @@ public class InventoryUtils {
                 .collect(HashMap::new, (map, index) -> map.put(index, inventory.getItem(index)), HashMap::putAll);
     }
 
-    public static boolean checkAndUpdateData(RtagEditor<?> tag) {
+    public static void checkAndUpdateData(RtagEditor<?, ?> tag) {
+        int version;
         if (tag.hasTag("PublicBukkitValues", "meowilbox:data_version")) {
-            int version = tag.get("PublicBukkitValues", "meowilbox:data_version");
-            // TODO
+            version = tag.get("PublicBukkitValues", "meowilbox:data_version");
         } else {
-            // FIXME
+            version = 3465; // as we target 1.20.1 before
+        }
+
+        if (version < DfuUtils.getDataVersion()) {
+            if (tag.hasTag("PublicBukkitValues", "meowilbox:item_content")) {
+                List<Map<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_content");
+                List<Map<String, Object>> updatedList = nbtList.stream()
+                        .map(map -> TagCompound.newTag(RtagMirror.INSTANCE, map))
+                        .map(nbtTag -> DfuUtils.update(nbtTag, version))
+                        .map(nbtTag -> TagCompound.getValue(RtagMirror.INSTANCE, nbtTag))
+                        .toList();
+                tag.set(updatedList, "PublicBukkitValues", "meowilbox:item_content");
+            } else if (tag.hasTag("PublicBukkitValues", "meowilbox:item_inventory")) {
+                List<HashMap<String, Object>> nbtList = tag.get("PublicBukkitValues", "meowilbox:item_inventory");
+                var inventory = nbtList.stream()
+                        .collect(Collectors.toMap(map -> (int) map.get("Slot"), map -> TagCompound.newTag(RtagMirror.INSTANCE, map.get("Item"))));
+
+                List<HashMap<String, Object>> updatedList = inventory.entrySet().stream()
+                        .peek(entry -> entry.setValue(DfuUtils.update(entry.getValue(), version)))
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> TagCompound.getValue(RtagMirror.INSTANCE, entry.getValue())))
+                        .entrySet().stream().map(entry -> {
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("Slot", entry.getKey());
+                            map.put("Item", entry.getValue());
+                            return map;
+                        }).toList();
+                tag.set(updatedList, "PublicBukkitValues", "meowilbox:item_inventory");
+            }
+            tag.set(DfuUtils.getDataVersion(), "PublicBukkitValues", "meowilbox:data_version");
         }
     }
 
     public static void checkAndUpdateData(Object tagCompound) {
+        int version = 3465;
         if (TagCompound.hasKey(tagCompound, "data_version")) {
-            int version = (int) TagBase.getValue(TagCompound.get(tagCompound, "data_version"));
+            version = (int) TagBase.getValue(TagCompound.get(tagCompound, "data_version"));
+        }
 
-        } else {
+        if (version < DfuUtils.getDataVersion()) {
 
         }
     }
