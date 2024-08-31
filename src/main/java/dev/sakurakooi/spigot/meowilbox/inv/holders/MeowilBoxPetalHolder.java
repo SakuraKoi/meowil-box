@@ -44,6 +44,6 @@ public class MeowilBoxPetalHolder implements MeowilBoxHolder {
         RtagItem.edit(petalItem, tag -> {
             InventoryUtils.setInventory(tag, InventoryUtils.inventoryToMap(inventory, 0, inventory.getSize()));
         });
-        player.getInventory().setItem(heldItemSlot, petalItem);
+        player.getInventory().setItem(heldItemSlot, petalItem.clone());
     }
 }
